@@ -1,0 +1,122 @@
+.lightsout-container {
+  max-width: 410px;
+  height: 50em;
+  margin: 36px auto 28px auto;
+  background: #112358;
+  border-radius: 20px;
+  box-shadow: 0 8px 40px #063b6a33, 0 1.5px 2px #5cc6fd33;
+  font-family: 'Share Tech Mono', 'Segoe UI', monospace;
+  color: #f7faff;
+  text-align: center;
+  padding: 24px 2vw 38px 2vw;
+  user-select: none;
+}
+
+.lightsout-title {
+  font-size: 2.1rem;
+  font-weight: bold;
+  color: #ffed4d;
+  letter-spacing: 7px;
+  margin-bottom: 7px;
+  text-shadow: 0 2.5px 15px #ffe460ad, 0 1.5px 3px #083450;
+}
+
+.lightsout-bar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 19px;
+  font-size: 1.15rem;
+}
+
+.lightsout-btn {
+  background: linear-gradient(90deg,#fff44f 10%,#43bae6 120%);
+  color: #194d77;
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 7px 18px;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+  margin-left: 11px;
+  box-shadow: 0 2.5px 11px #ffb90038;
+  transition: background 0.14s, color 0.13s;
+}
+.lightsout-btn:hover,
+.lightsout-btn:focus {
+  background: linear-gradient(120deg,#43bae6 20%,#fff44f 110%);
+  color: #153056;
+  outline: 2px solid #49fcff99;
+}
+
+.lightsout-board {
+  display: grid;
+  gap: 7px;
+  background: #243b5c;
+  border-radius: 15px;
+  margin: 0 auto 20px auto;
+  box-shadow: 0 2px 19px #69e4fc38;
+  width: min(90vw, 334px);
+  aspect-ratio: 1;
+  padding: 14px;
+}
+
+.lightsout-cell {
+  width: 1fr;
+  height: 0;
+  padding-bottom: 100%;
+  border-radius: 18px;
+  border: 3.3px solid #6df9fd;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  background: #23355c;
+  transition: box-shadow 0.11s, background 0.18s;
+  box-shadow: 0 1.5px 8px #44e6fd29;
+}
+.lightsout-cell.on {
+  background: radial-gradient(circle, #fff060 66%, #ffe200 92%, #f7c60000 100%);
+  box-shadow:
+    0 2px 21px #fff46088,
+    0 0 44px #fdffb8,
+    0 0 12px 5px #fffdd480;
+  border-color: #fff44f;
+  animation: lighton 0.26s;
+}
+@keyframes lighton {
+  0% { filter: brightness(1.7);}
+  85% {filter: brightness(1.02);}
+  100% {filter: none;}
+}
+.lightsout-cell.off {
+  background: radial-gradient(circle,#333b62 40%, #1b2950 100%);
+  border-color: #6df9fd;
+  box-shadow: 0 1.5px 8px #18388810;
+}
+
+.lightsout-winbox {
+  background: #f6fbde;
+  color: #169333;
+  border-radius: 18px;
+  border: 2.4px solid #fff927cc;
+  margin: 17px auto 0 auto;
+  box-shadow: 0 0 21px #fcf89075;
+  padding: 19px 12px 12px 12px;
+  font-size: 1.17rem;
+  font-weight: bold;
+  max-width: 310px;
+  animation: lo-winbox 1s;
+}
+@keyframes lo-winbox {
+  0% { opacity: 0; transform: scale(.66);}
+  72% { opacity: .83;}
+  100% { opacity: 1; transform: scale(1);}
+}
+
+@media (max-width:490px) {
+  .lightsout-title { font-size: 1.19rem;}
+  .lightsout-board { width: min(99vw, 230px);}
+  .lightsout-cell { border-radius: 9px;border-width:2.2px;}
+  .lightsout-btn { font-size:.92rem; }
+}

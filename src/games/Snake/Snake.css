@@ -1,0 +1,221 @@
+.snake-nokia-bg {
+  text-align: center;
+  padding: 2rem;
+  max-width: 90vw;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #282d1f 0%, #17381a 90%);
+  border-radius: 1.1em;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.snake-nokia-container {
+  margin: 1.5rem auto;
+  padding: 1.5rem;
+  background: #313a24;
+  border-radius: 1.1em;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 0 7px #1f2719;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.snake-score-row {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-family: 'VT323', 'Fira Mono', 'Consolas', monospace;
+  font-size: 1.2rem;
+  color: #b7ff6d;
+}
+.snake-score-label {
+  color: #b7ff6d;
+}
+.snake-score-val {
+  font-weight: bold;
+  color: #9fff45;
+}
+
+.snake-speed {
+  display: flex;
+  align-items: center;
+}
+
+.snake-speed-sel {
+  margin-left: 0.4rem;
+  background: #264f22;
+  color: #b9f296;
+  border: 1px solid #7fd77c;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.4rem;
+  font-family: 'Fira Mono', monospace;
+  font-size: 1rem;
+  outline: none;
+}
+
+.snake-speed-sel:disabled {
+  opacity: 0.7;
+}
+
+.snake-speed-sel:hover:enabled {
+  background: #317a3d;
+  cursor: pointer;
+}
+
+.snake-board {
+  position: relative;
+  background: #022e15;
+  border: 6px inset #7eff92;
+  box-shadow: 0 4px 36px rgba(26, 81, 32, 0.87);
+  margin-bottom: 1rem;
+  outline: none;
+  box-sizing: content-box;
+  overflow: hidden;
+}
+
+/* Snake and food fit within boxes (centering via margin in JSX!) */
+.snake-segment,
+.snake-head {
+  position: absolute;
+  border-radius: 4px;
+  background: linear-gradient(135deg, #b1fc49 40%, #255b1b 100%);
+  box-shadow: 0 0 3px rgba(80, 210, 49, 0.7);
+  border: 2px solid #8abb36;
+}
+.snake-head {
+  background: linear-gradient(135deg, #e2f98b 60%, #67e974 100%);
+  box-shadow: 0 0 9px #faffad;
+  border: 2.3px solid #b6e25a;
+}
+.snake-food {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, #7fff8d 80%, #1b9909 100%);
+  box-shadow: 0 0 14px rgba(145, 255, 190, 0.6);
+  border: 2px solid #56e25c;
+}
+
+/* Draw grid only between squares, not at outermost edges! */
+.snake-grid-line {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+}
+.snake-grid-vert {
+  width: 2px;
+  background: #355f35;
+}
+.snake-grid-horiz {
+  height: 2px;
+  background: #355f35;
+}
+
+/* CONTROLS, PANEL, BUTTONS */
+.snake-panel {
+  margin-bottom: 0.5rem;
+  min-height: 2.4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.snake-btn {
+  background: linear-gradient(145deg, #97f876, #2e7723);
+  color: #142d06;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border: 2px solid #80e86c;
+  border-radius: 0.8rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: background 0.2s, transform 0.1s;
+  font-family: 'VT323', 'Fira Mono', monospace;
+  margin: 0.23rem 0.25rem 0.13rem 0;
+  display: inline-block;
+}
+.snake-btn-stop {
+  background: linear-gradient(145deg, #ffd87e, #b34a19);
+  color: #341406;
+  border-color: #ffc280;
+}
+.snake-btn:hover {
+  background: #b8ffb1;
+  color: #0a2e0b;
+  transform: scale(1.05);
+}
+.snake-btn:active { transform: scale(0.97); }
+
+.snake-instructions {
+  font-family: 'Fira Mono', 'Consolas', monospace;
+  color: #98f69c;
+  margin-top: 0.5rem;
+}
+
+.snake-over-message {
+  font-family: 'VT323', monospace;
+  color: #faffad;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.snake-controls-dpad {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 0.6rem;
+}
+.snake-controls-dpad .mid-row {
+  display: flex;
+  gap: 1rem;
+  margin: 0.4rem 0;
+}
+.dir-btn {
+  user-select: none;
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #7bef7b 20%, #215c13 95%);
+  box-shadow: 0 1px 4px #217a13, inset 0 0 6px #7fef7f;
+  border: 2px solid #358b2e;
+  font-size: 2.12em;
+  font-weight: bold;
+  text-align: center;
+  line-height: 44px;
+  color: #144b09;
+  transition: color 0.2s, background 0.18s;
+  margin: 0;
+}
+.dir-btn:hover {
+  background: #e4ffe4;
+  color: #158009;
+  transform: scale(1.05);
+}
+.empty-dpad-cell {
+  width: 3rem;
+  height: 3rem;
+}
+.snake-footer {
+  margin-top: 1rem;
+  color: #b2d39a;
+  font-family: 'Fira Mono', 'Consolas', monospace;
+  opacity: 0.7;
+}
+@media (max-width: 720px) {
+  .snake-nokia-bg { 
+  padding: 1rem;
+  min-height: 100vh;
+  min-width: 110vw;
+  width: 120vw;
+  height: 115vh; }
+  .snake-nokia-container { padding: 1rem; }
+  .snake-score-row { font-size: 1rem; }
+  .snake-btn { font-size: 0.9rem; padding: 0.4rem 1rem; }
+  .snake-speed-sel { font-size: 0.9rem; }
+  .dir-btn { font-size: 1.4em; width: 34px; height: 34px; line-height: 32px; }
+  .empty-dpad-cell { width: 2rem; height: 2rem; }
+}

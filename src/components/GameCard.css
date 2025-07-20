@@ -1,0 +1,31 @@
+.game-card {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.17);
+  padding: 1.5rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.game-card:hover {
+  transform: translateY(-5px) scale(1.04);
+  box-shadow: 0 8px 30px rgba(44, 35, 171, 0.18);
+  background: #e9e9ff;
+}
+
+.game-icon {
+  margin-bottom: 0.6rem;
+  color: #232ceb;
+}
+
+.game-title {
+  margin-bottom: 0.4rem;
+  font-weight: bold;
+  color: #232237;
+}
+
+.game-desc {
+  font-size: 0.92rem;
+  color: #5a5885;
+}

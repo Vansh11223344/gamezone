@@ -1,0 +1,166 @@
+.othello-container {
+  background: #287c35;
+  border: 8px solid #2a5030;
+  border-radius: 18px;
+  box-shadow: 0 8px 44px #0006;
+  width: max-content;
+  margin: 35px auto 20px auto;
+  padding: 22px 32px 24px 32px;
+  user-select: none;
+  font-family: 'Segoe UI', Verdana, Arial, sans-serif;
+}
+
+.othello-title {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  color: #d4ffd4;
+  letter-spacing: 2.5px;
+  margin-bottom: 6px;
+  text-shadow: 0 2px 7px #164918bc;
+}
+
+.othello-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 13px;
+  font-size: 1.13rem;
+  color: #fff;
+}
+
+.othello-status {
+  min-width: 140px;
+  text-align: right;
+  color: #fded85;
+  font-weight: bold;
+  text-shadow: 0 1px 3px #343a36;
+}
+
+.othello-btn {
+  font-size: 1.05rem;
+  background: #ffeea2;
+  color: #205c14;
+  border: 1.8px solid #2a5030;
+  font-weight: bold;
+  border-radius: 7px;
+  padding: 6px 18px;
+  margin: 0 6px;
+  box-shadow: 0 1.4px 2.8px #13320211;
+  cursor: pointer;
+  transition: background 0.15s, color 0.12s;
+}
+.othello-btn:hover,.othello-btn:focus {
+  background: #287c35;
+  color: #ffeea2;
+  outline: none;
+}
+
+.othello-board {
+  display: grid;
+  background: #26722a;
+  border: 4px solid #121;
+  border-radius: 13px;
+  box-shadow: 0 3px 18px #1b4b1980;
+  gap: 0;
+  margin: 0 auto 8px auto;
+  touch-action: none;
+  user-select: none;
+  aspect-ratio: 1;
+  width: min(90vw, 480px);
+}
+
+.othello-cell {
+  width: 46px;
+  height: 46px;
+  background:
+    linear-gradient(130deg, #2b982e 81%, #17601f 100%);
+  border: 2px solid #153b17;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: outline 0.1s, background 0.1s;
+  outline: none;
+}
+
+.othello-cell.valid-move:after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border: 2px dashed #fded85;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 2;
+  animation: blink 0.8s infinite;
+}
+@keyframes blink {
+  0% { opacity: 0.97;}
+  60% {opacity:.38;}
+  100% {opacity:0.97;}
+}
+
+.othello-cell.valid-move {
+  background: #badf51;
+}
+.othello-cell.last-move {
+  box-shadow: 0 0 0 3.5px #c9e75c, 0 0 18px #35e2b377;
+}
+
+.othello-disc {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2.3px solid #414141bb;
+  box-shadow: 0 1px 5px #111a, 0 0 6px #fff5;
+}
+
+.othello-disc.black {
+  background: radial-gradient(ellipse at 59% 32%, #888 32%, #222 100%);
+  border: 2.5px solid #222;
+  box-shadow: 0 2px 7px #28282855 inset, 0 0 1px #fff7;
+}
+.othello-disc.white {
+  background: radial-gradient(ellipse at 45% 20%, #f9f9f9 62%, #aab5bd 100%);
+  border: 2.1px solid #d8d8d8;
+  box-shadow: 0 1.5px 8px #fff7 inset, 0 0 2px #b7b7b7;
+}
+
+.othello-move-dot {
+  pointer-events: none;
+  background: #ffe484;
+  opacity: 0.68;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+.move-ring {
+  position: absolute;
+  inset: 2.5px;
+  border: 2.5px dashed #ffee6a;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 4;
+  animation: blink 0.8s 2;
+}
+
+.othello-footer {
+  margin-top: 15px;
+  color: #dbeccc;
+  text-align: center;
+  font-size: 1.07rem;
+  opacity: .88;
+  letter-spacing: 1px;
+}
+
+/* Responsive */
+@media (max-width:610px) {
+  .othello-title { font-size: 1.18rem;}
+  .othello-board { width: min(95vw, 380px);}
+  .othello-cell { width:32px;height:32px;}
+  .othello-disc {width:24px;height:24px;}
+  .othello-btn { font-size:.97rem; }
+}

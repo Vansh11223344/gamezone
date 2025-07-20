@@ -1,0 +1,184 @@
+/* Root variables for responsive scaling */
+:root {
+  --base-width: 800px;
+  --base-height: 400px;
+  --scale-factor: 1;
+  --padding: 20px;
+  --control-size: 50px;
+}
+
+/* Container styling */
+.pong-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #222 0%, #333 100%);
+  color: #fff;
+  font-family: "Arial", sans-serif;
+  padding: var(--padding);
+  overflow-x: hidden;
+}
+
+/* Title styling */
+.pong-title {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  text-shadow: 0 0 10px #fff;
+  letter-spacing: 4px;
+  text-align: center;
+}
+
+/* Game area styling */
+.pong-game-area {
+  position: relative;
+  border: 4px solid #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  width: 100%;
+  max-width: var(--base-width);
+  margin: 0 auto;
+}
+
+/* Canvas styling */
+.pong-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 800 / 400;
+  background-color: #000;
+}
+
+/* Touch controls styling */
+.pong-touch-controls {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 10;
+}
+
+.pong-control-btn {
+  width: var(--control-size);
+  height: var(--control-size);
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 2px solid #fff;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.pong-control-btn:active {
+  transform: scale(0.95);
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Instructions styling */
+.pong-instructions {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 1.2rem;
+  max-width: 600px;
+}
+
+.pong-instructions p {
+  margin: 5px 0;
+}
+
+/* Start button styling */
+.pong-start-btn {
+  margin-top: 20px;
+  padding: 15px 30px;
+  font-size: 1.5rem;
+  background-color: #fff;
+  color: #000;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.pong-start-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 20px rgba(0, 0, 0, 0.4);
+}
+
+.pong-start-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  :root {
+    --padding: 15px;
+    --control-size: 40px;
+  }
+
+  .pong-title {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+  }
+
+  .pong-instructions {
+    font-size: 1rem;
+    margin-top: 15px;
+  }
+
+  .pong-start-btn {
+    font-size: 1.3rem;
+    padding: 12px 25px;
+  }
+
+  .pong-touch-controls {
+    right: 5px;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --padding: 10px;
+    --control-size: 35px;
+  }
+
+  .pong-title {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+
+  .pong-game-area {
+    border-width: 2px;
+    border-radius: 8px;
+  }
+
+  .pong-instructions {
+    font-size: 0.9rem;
+    margin-top: 10px;
+  }
+
+  .pong-start-btn {
+    font-size: 1.1rem;
+    padding: 10px 20px;
+  }
+
+  .pong-touch-controls {
+    right: 2px;
+    gap: 6px;
+  }
+
+  .pong-control-btn {
+    font-size: 18px;
+  }
+}

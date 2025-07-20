@@ -1,0 +1,185 @@
+.rushhour-container {
+  max-width: 96vw;
+  margin: 30px auto 60px auto;
+  padding: 20px 6px 28px 6px;
+  background: linear-gradient(145deg, #39405a, #1e2236);
+  border-radius: 24px;
+  box-shadow: 0 0 30px #0e122baa;
+  color: #e8e8f6;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.rushhour-title {
+  font-size: 2.3rem;
+  font-weight: 700;
+  color: #b44a3d;
+  margin-bottom: 12px;
+  text-shadow: 0 0 12px #e6442f80, 0 2px 5px #41181187;
+}
+.rushhour-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  font-weight: 600;
+  font-size: 1.15rem;
+  margin-bottom: 16px;
+  color: #f0dbdbcc;
+  width: 100%;
+  max-width: 492px;
+}
+.rushhour-btn-group {
+  display: flex;
+  gap: 10px;
+}
+.rushhour-btn {
+  background: linear-gradient(45deg, #ef6351, #e0b55c);
+  border: none;
+  padding: 8px 22px;
+  border-radius: 25px;
+  font-weight: bold;
+  color: #2d1d16;
+  cursor: pointer;
+  box-shadow: 0 2px 10px #e6a53DAC;
+  transition: all 0.28s ease;
+  min-width: 100px;
+}
+.rushhour-btn:hover,
+.rushhour-btn:focus {
+  background: linear-gradient(45deg, #e0b55c, #ef6351);
+  outline: none;
+  box-shadow: 0 4px 18px #fba74fcc;
+}
+.rushhour-board {
+  --cell-size: 80px;
+  position: relative;
+  margin: 0 auto 20px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #485062, #1f2233);
+  user-select: none;
+  touch-action: none;
+  box-shadow: 0 2px 15px #0a0d17;
+  width: calc(var(--cell-size) * 6 + 6px * 2);
+  height: calc(var(--cell-size) * 6 + 6px * 2);
+  min-width: 220px; min-height: 220px;
+  max-width: min(99vw,480px);
+  max-height: min(99vw,480px);
+}
+.rushhour-board {
+  overflow: visible;
+}
+.rushhour-exit {
+  position: absolute;
+  background: repeating-linear-gradient(135deg, #fdf6e1, #fdf6e1 7px, #ecba3c 7px, #ecba3c 20px);
+  border-radius: 8px 64px 64px 8px;
+  border: 3px solid #bd933e;
+  box-shadow: 0 0 13px #fff594a5;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.rushhour-car {
+  position: absolute;
+  border-radius: 12px;
+  box-shadow: 0 0 12px #00000080, 0 3px 14px #2a202014 inset;
+  border: 2px solid #000000bb;
+  cursor: grab;
+  user-select: none;
+  transition: box-shadow 0.2s ease;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.rushhour-car:active,
+.rushhour-car.selected {
+  box-shadow: 0 0 30px #f14d43ab, 0 0 12px #e02b21cc;
+  cursor: grabbing;
+  border-color: #e4332d;
+  outline: none;
+}
+.rushhour-maincar-front {
+  position: absolute;
+  right: -17%;
+  top: 14%;
+  width: 19%;
+  height: 72%;
+  background: linear-gradient(90deg, #f9d8b3 0, #dbc590 100%);
+  border-radius: 0 9px 9px 0;
+  box-shadow: 0 0 7px #c6b07980 inset;
+  pointer-events: none;
+  z-index: 10;
+}
+.rushhour-controls {
+  margin-top: 8px;
+  font-size: 1.02rem;
+  color: #cdb9b9;
+  user-select: none;
+  width: 100%;
+  max-width: 492px;
+}
+.rushhour-controls p {
+  margin: 0 auto;
+  line-height: 1.4;
+}
+.rushhour-winbox {
+  margin: 22px auto 0 auto;
+  padding: 10px 24px;
+  font-weight: 700;
+  font-size: 1.17rem;
+  border: 3px solid #ec6b59;
+  border-radius: 18px;
+  box-shadow: 0 4px 20px #ff4c3888 inset, 0 0 18px #f9583f88;
+  background: linear-gradient(135deg, #ffd7cdcc, #ff9f7166);
+  color: #720601;
+  max-width: 492px;
+  user-select: none;
+  text-align: center;
+  animation: win-pop 0.8s;
+}
+.rushhour-winbox .rushhour-btn {
+  margin: 10px 5px;
+  min-width: 120px;
+}
+@keyframes win-pop {
+  0% { opacity: 0; transform: scale(0.7); }
+  80% { opacity: 0.9; }
+  100% { opacity: 1; transform: scale(1); }
+}
+.rushhour-footer {
+  text-align: center;
+  padding-top: 8px;
+  font-size: 0.95rem;
+  color: #cc8b7bab;
+  user-select: none;
+  width: 100%;
+  max-width: 492px;
+}
+@media (max-width: 600px) {
+  .rushhour-container { padding: 8px 2vw 10px 2vw; margin: 16px auto; }
+  .rushhour-title { font-size: 1.55rem; }
+  .rushhour-bar { flex-direction: column; gap: 10px; }
+  .rushhour-btn-group { width: 100%; justify-content: center; }
+  .rushhour-btn { min-width: 42vw; }
+  .rushhour-board {
+    width: 94vw;
+    height: 94vw;
+    max-width: 98vw; max-height: 98vw;
+    min-width: 180px; min-height: 180px;
+  }
+  .rushhour-exit {
+    border-radius: 7% 25% 25% 7%/20% 60% 60% 20%;
+    /* other properties set inline */
+  }
+  .rushhour-car { border-width: 1px; }
+  .rushhour-maincar-front { border-radius: 0 6px 6px 0; }
+  .rushhour-winbox { max-width: 98vw; font-size: 1.02rem; }
+  .rushhour-controls { max-width: 98vw; }
+  .rushhour-controls p { font-size: 0.96rem; }
+  .rushhour-footer { max-width: 98vw; }
+}

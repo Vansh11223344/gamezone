@@ -1,0 +1,297 @@
+.snl-outer {
+  background: linear-gradient(135deg, #f6e18c 65%, #cef2b1 100%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  padding: 1.5rem 0;
+  box-sizing: border-box;
+}
+
+.snl-modal {
+  background: #fcf5da;
+  border-radius: 1rem;
+  margin: 2rem auto 0;
+  padding: 2rem;
+  max-width: 90%;
+  width: 400px;
+  box-shadow: 0 4px 30px rgba(170, 220, 54, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.snl-modal h2 {
+  letter-spacing: 0.05em;
+  color: #356d08;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.snl-btn {
+  padding: 0.8rem 2rem;
+  background: linear-gradient(90deg, #e5da19 60%, #e1bf30 100%);
+  color: #384801;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 0.8rem;
+  border: none;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(255, 218, 27, 0.3);
+  transition: background 0.2s, transform 0.1s;
+}
+
+.snl-btn:hover {
+  background: #e9ed6f;
+  transform: scale(1.05);
+}
+
+.snl-btn-reset {
+  padding: 0.6rem 1.5rem;
+  background: #dfdb85;
+}
+
+.snl-btn-main {
+  background: linear-gradient(90deg, #f5de01 45%, #e3df32 100%);
+}
+
+.snl-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 251, 199, 0.8);
+  width: 90%;
+  max-width: 500px;
+  border-radius: 1rem;
+  margin: 1rem auto;
+  padding: 0.8rem 1.2rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #384d01;
+}
+
+.snl-dice-wrap {
+  margin-left: 0.8rem;
+}
+
+.snl-dice-btn {
+  background: linear-gradient(#fff248 60%, #e3e655 100%);
+  border-radius: 0.7rem;
+  border: 2px solid #b3b330;
+  font-size: 1.5rem;
+  font-weight: bold;
+  box-shadow: 0 2px 10px rgba(255, 245, 171, 0.3);
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.2s;
+}
+
+.snl-dice-btn:disabled {
+  background: #e2efc1;
+  color: #d3cf90;
+  cursor: not-allowed;
+}
+
+.snl-dice-num {
+  font-size: 1.2rem;
+  font-family: 'Fira Mono', monospace;
+  color: #c7ad07;
+  font-weight: 900;
+}
+
+.snl-turn {
+  letter-spacing: 0.03em;
+  font-weight: 600;
+}
+
+.snl-p0 {
+  color: #df211d;
+}
+
+.snl-p1 {
+  color: #277ee6;
+}
+
+.snl-board-wrap {
+  width: 90%;
+  max-width: 500px;
+  margin: 1rem auto;
+}
+
+.snl-board {
+  width: 100%;
+  aspect-ratio: 1/1;
+  display: grid;
+  grid-template: repeat(10, 1fr) / repeat(10, 1fr);
+  position: relative;
+  background: #fcf6cd;
+  border-radius: 1.2rem;
+  box-shadow: 0 6px 20px rgba(220, 217, 39, 0.2);
+  border: 5px solid #e1bd32;
+  overflow: hidden;
+}
+
+.snl-cell {
+  border: 1px solid #eadfbe;
+  background: #fcf7eb;
+  position: relative;
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  min-width: 0;
+  min-height: 0;
+}
+
+.snl-snake-start {
+  background: #e5ffe8;
+}
+
+.snl-ladder-start {
+  background: #fff5c3;
+}
+
+.snl-num {
+  font-size: clamp(0.7rem, 1.8vw, 0.85rem);
+  color: #beae19;
+  font-weight: bold;
+  position: absolute;
+  bottom: 0.3rem;
+  right: 0.4rem;
+  opacity: 0.95;
+  pointer-events: none;
+  user-select: none;
+}
+
+.snl-token {
+  position: absolute;
+  width: clamp(1rem, 2.5vw, 1.2rem);
+  height: clamp(1rem, 2.5vw, 1.2rem);
+  border-radius: 50%;
+  border: 3px solid #567a1c;
+  box-shadow: 0 2px 6px rgba(93, 97, 3, 0.2);
+  z-index: 3;
+  pointer-events: none;
+  transition: left 0.15s, top 0.15s;
+}
+
+.snl-token1 {
+  background: linear-gradient(135deg, #ed4742 40%, #a60311 100%);
+  border-color: #b80d09;
+}
+
+.snl-token2 {
+  background: linear-gradient(135deg, #2f81e9 36%, #194398 100%);
+  border-color: #123383;
+}
+
+.snl-highlight {
+  box-shadow: 0 0 5px 2px rgba(115, 255, 62, 0.5);
+  background: #fff8e7 !important;
+}
+
+.snl-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  overflow: visible;
+}
+
+.snl-msgs {
+  width: 90%;
+  max-width: 500px;
+  margin: 0.5rem auto;
+  background: rgba(255, 250, 218, 0.9);
+  color: #f1460f;
+  font-size: clamp(0.9rem, 2.2vw, 1rem);
+  font-weight: 600;
+  border-radius: 0.9rem;
+  box-shadow: 0 2px 10px rgba(255, 232, 169, 0.2);
+  padding: 0.8rem 1rem;
+  text-align: center;
+  letter-spacing: 0.01em;
+}
+
+.snl-msgs b {
+  color: #b8ae2c;
+}
+
+@media (max-width: 600px) {
+  .snl-outer {
+    padding: 0.5rem;
+  }
+
+  .snl-modal {
+    width: 95%;
+    padding: 1.5rem;
+    margin: 1rem auto;
+  }
+
+  .snl-modal h2 {
+    font-size: 1.5rem;
+  }
+
+  .snl-btn {
+    padding: 0.6rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  .snl-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+  }
+
+  .snl-dice-wrap {
+    margin-left: 0;
+  }
+
+  .snl-dice-btn {
+    padding: 0.3rem 0.6rem;
+    font-size: 1.2rem;
+  }
+
+  .snl-dice-num {
+    font-size: 1rem;
+  }
+
+  .snl-board-wrap {
+    width: 95%;
+  }
+
+  .snl-board {
+    border: 3px solid #e1bd32;
+  }
+}
+
+@media (max-width: 400px) {
+  .snl-token {
+    width: 0.8rem;
+    height: 0.8rem;
+    border-width: 2px;
+  }
+
+  .snl-num {
+    font-size: 0.6rem;
+    bottom: 0.2rem;
+    right: 0.3rem;
+  }
+
+  .snl-msgs {
+    font-size: 0.8rem;
+    padding: 0.6rem;
+  }
+}

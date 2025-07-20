@@ -1,0 +1,147 @@
+.gomoku-container {
+  background: #ebc870;
+  border: 9px solid #76451e;
+  border-radius: 24px;
+  box-shadow: 0 8px 44px #5d3d2170;
+  width: max-content;
+  margin: 38px auto 18px auto;
+  padding: 19px 22px 22px 22px;
+  user-select: none;
+  font-family: 'Noto Sans JP', 'Segoe UI', Arial, sans-serif;
+}
+
+.gomoku-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #644219;
+  letter-spacing: 5px;
+  margin-bottom: 6px;
+  text-align: center;
+  text-shadow: 0 2px 16px #8d642910;
+}
+
+.gomoku-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  font-size: 1.17rem;
+}
+
+.gomoku-status {
+  color: #884927;
+  font-weight: bold;
+  min-width: 142px;
+  text-align: right;
+}
+.gomoku-btn {
+  background: #e3c28f;
+  color: #644219;
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 8px 20px;
+  border-radius: 8px;
+  border: 1.6px solid #a88c4d;
+  margin: 0 10px;
+  box-shadow: 0 1.8px 8px #9e831244;
+  cursor: pointer;
+  transition: background 0.11s, color 0.09s;
+}
+.gomoku-btn:hover, .gomoku-btn:focus {
+  background: #ffe5ab;
+  color: #a85821;
+  outline: none;
+}
+
+.gomoku-board {
+  display: grid;
+  background: repeating-linear-gradient(#ddb969 0 1px, transparent 1px 50px),
+    repeating-linear-gradient(90deg, #ddb969 0 1px, transparent 1px 50px),
+    #edbb6ad1;
+  border: 6px solid #a88c4d;
+  border-radius: 14px;
+  box-shadow: 0 3px 18px #dfc08340;
+  gap: 0;
+  margin: 0 auto 3px auto;
+  touch-action: none;
+  user-select: none;
+  width: min(95vw, 600px);
+  aspect-ratio: 1;
+}
+.gomoku-cell {
+  width: 28px;
+  height: 28px;
+  min-width: 0; min-height: 0;
+  background: none;
+  box-shadow: 0 2px 8px #c09a3d20;
+  border: 1.6px solid #ae9658cc;
+  border-radius: 3.5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  position: relative;
+  transition: background 0.12s;
+}
+.gomoku-cell:active, .gomoku-cell:focus {
+  background: #fffae1a2;
+}
+.gomoku-cell.last-move {
+  box-shadow: 0 0 0 3.3px #de5741c8, 0 0 12px #d2414118;
+  background: #ffe2c5c2;
+  z-index: 2;
+}
+
+.gomoku-stone {
+  width: 21px;
+  height: 21px;
+  border-radius: 50%;
+  box-shadow: 0 1.5px 8px #43281947, 0 0 9px #fff4;
+  border: 2.5px solid #998752ad;
+  position: relative;
+  display: inline-block;
+}
+.gomoku-stone.black {
+  background: radial-gradient(ellipse at 58% 39%, #666 44%, #155 68%, #2b1d0b 100%);
+  box-shadow:
+    0 2px 11px #442f114b inset,
+    0 0 8px #111, 0 2px 7px #441;
+  border: 2.2px solid #433109e0;
+}
+.gomoku-stone.white {
+  background: radial-gradient(ellipse at 45% 19%, #f7f7f9 62%, #f3eec4 100%);
+  border: 2.1px solid #eadd99;
+  box-shadow: 0 1.5px 7px #fff7 inset, 0 0 2px #beae87;
+}
+.gomoku-last-mark {
+  position: absolute;
+  inset: 4.5px;
+  border: 2.5px dashed #ff835c;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  animation: g-blink 1s 2;
+}
+@keyframes g-blink {
+  0% {opacity:1;}
+  55% {opacity:0.20;}
+  100% {opacity:1;}
+}
+.gomoku-footer {
+  margin-top: 15px;
+  color: #7e622a;
+  text-align: center;
+  font-size: 1.08rem;
+  opacity: .88;
+  letter-spacing: 1.3px;
+}
+
+/* Responsive */
+@media (max-width:690px) {
+  .gomoku-title { font-size: 1.12rem;}
+  .gomoku-board { width: min(99vw, 380px);}
+  .gomoku-cell { width:19px;height:19px;}
+  .gomoku-stone {width:11.5px;height:11.5px;}
+  .gomoku-btn { font-size:.93rem; }
+}

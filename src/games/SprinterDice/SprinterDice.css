@@ -1,0 +1,304 @@
+/* Container */
+.sprinterdice-container {
+  max-width: 550px;
+  margin: 24px auto 30px auto;
+  padding: 20px 12px 32px 12px;
+  background: linear-gradient(135deg, #203864 0%, #0D243F 100%);
+  border-radius: 20px;
+  box-shadow: 0 10px 32px #000a3fcc, 0 2px 9px #00173f44;
+  color: #e8f6ff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  user-select: none;
+}
+
+/* Title */
+.sprinterdice-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 5px;
+  margin-bottom: 20px;
+  color: #8adbff;
+  text-shadow: 0 0 12px #19a1ffcc;
+}
+
+/* Toolbar */
+.sprinterdice-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.05rem;
+  color: #bbdfffcc;
+  margin-bottom: 20px;
+}
+
+.sprinterdice-lanes-indicator {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.sprinterdice-lane-indicator {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #4af4ffbb inset, 0 0 5px #0adfffaa;
+  transition: opacity 0.3s, border 0.3s;
+  cursor: default;
+}
+
+/* Active lane highlight */
+.sprinterdice-lane-indicator[style*="solid"] {
+  box-shadow: 0 0 16px #52c0ffcc, 0 0 8px #0dd9ffcc;
+  transform: scale(1.2);
+}
+
+/* Info & restart */
+.sprinterdice-info {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.sprinterdice-btn {
+  background: linear-gradient(135deg, #4594ff, #1c62e4);
+  padding: 8px 22px;
+  border-radius: 15px;
+  border: none;
+  color: #d4e9ff;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 0 10px #4d9effaa;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
+.sprinterdice-btn:hover,
+.sprinterdice-btn:focus {
+  background: linear-gradient(135deg, #77b8ff, #3b7fe6);
+  outline: none;
+}
+
+/* Board */
+.sprinterdice-board {
+  background: #08234c;
+  border-radius: 14px;
+  padding: 10px 0 14px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  user-select: none;
+  overflow-x: auto;
+}
+
+.sprinterdice-exit {
+  position: absolute;
+  right: 0;
+  top: calc((100% / 6) * 2);
+  width: 20px;
+  height: calc((100% / 6) * 2);
+  background: repeating-linear-gradient(135deg, #e3e3e3 0 6px, #cccccc 6px 12px);
+  border-radius: 5px 15px 15px 5px;
+  box-shadow: 0 0 16px #f7f7f7aa;
+  z-index: 10;
+  pointer-events: none;
+}
+
+@media (max-width: 600px) {
+  .sprinterdice-exit {
+    width: 14px;
+  }
+}
+
+.sprinterdice-lane {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+  position: relative;
+}
+
+.sprinterdice-lane-color {
+  min-width: 44px;
+  max-width: 44px;
+  background-color: #555;
+  border-radius: 10px;
+  color: white;
+  font-weight: 700;
+  font-size: 1.1rem;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 0 0 5px #000000bb;
+  transition: background-color 0.3s;
+}
+
+.sprinterdice-lane-color:hover {
+  filter: brightness(1.15);
+  cursor: default;
+}
+
+.sprinterdice-track {
+  flex: 1;
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: #7db4ff #0a325e;
+}
+
+.sprinterdice-track::-webkit-scrollbar {
+  height: 8px;
+}
+.sprinterdice-track::-webkit-scrollbar-thumb {
+  background-color: #7db4ff;
+  border-radius: 4px;
+}
+
+.sprinterdice-cell {
+  min-width: 36px;
+  min-height: 42px;
+  background-color: #1f376c;
+  border-radius: 10px;
+  box-shadow: inset 0 0 12px #14315899;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: white;
+  user-select: none;
+}
+
+.sprinterdice-cell.finish {
+  background: repeating-linear-gradient(135deg, #eaeaea 0 8px, #ddd 8px 16px);
+  border: 2px solid #ffc500;
+  color: #442b00;
+  font-weight: 700;
+  box-shadow: 0 0 15px #ffd92fbb;
+  position: relative;
+}
+
+.sprinterdice-flag {
+  font-size: 20px;
+}
+
+.runner-present .sprinterdice-runner {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 3px solid white;
+  color: white;
+  font-weight: 900;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  text-shadow: 0 0 3px black;
+  user-select: none;
+  box-shadow:
+    0 0 6px #fff,
+    inset 0 0 6px #d52f2f;
+}
+
+.sprinterdice-runner {
+  background-color: #d52f2f;
+}
+
+.sprinterdice-rollbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  margin: 18px 0 12px 0;
+  flex-wrap: wrap;
+}
+
+.sprinterdice-rollbtn {
+  background: linear-gradient(45deg,#ffe76a 0%,#d76504 120%);
+  font-weight: 900;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 16px;
+  padding: 14px 38px;
+  color: #411600;
+  cursor: pointer;
+  box-shadow: 0 3px 18px #ed9d0700;
+  transition: all 0.27s ease;
+  user-select: none;
+}
+
+.sprinterdice-rollbtn:hover,
+.sprinterdice-rollbtn:focus {
+  background: linear-gradient(135deg,#ffc722 10%,#da7232 90%);
+  box-shadow: 0 8px 30px #fdc34fbb;
+  outline: none;
+}
+
+.sprinterdice-currentroll {
+  color: #ffd93c;
+  font-weight: 700;
+  font-size: 1.06rem;
+  user-select: none;
+  min-width: 120px;
+  text-align: center;
+}
+
+.sprinterdice-winbox {
+  text-align: center;
+  margin: 20px auto 0 auto;
+  max-width: 300px;
+  font-weight: 800;
+  font-size: 1.3rem;
+  color: #ffee55;
+  text-shadow: 0 0 12px #baa212bb;
+  user-select: none;
+}
+
+.sprinterdice-footer {
+  color: #c8d9f6;
+  font-size: 1.02rem;
+  font-weight: 600;
+  letter-spacing: 1.05px;
+  margin-top: 20px;
+  user-select: none;
+}
+
+/* Responsive */
+@media (max-width:640px) {
+  .sprinterdice-container {
+    padding: 20px 12px 40px 12px;
+  }
+  .sprinterdice-title {
+    font-size: 1.95rem;
+    letter-spacing: 3px;
+  }
+  .sprinterdice-lane-color {
+    min-width: 32px;
+    font-size: 1rem;
+  }
+  .sprinterdice-cell {
+    min-width: 32px;
+    min-height: 38px;
+    font-size: 0.95rem;
+  }
+  .sprinterdice-runner {
+    width: 19px;
+    height: 19px;
+    font-size: 1rem;
+  }
+  .sprinterdice-rollbtn {
+    padding: 12px 34px;
+    font-size: 1.1rem;
+  }
+  .sprinterdice-currentroll {
+    font-size: 1.04rem;
+    min-width: 100px;
+  }
+}

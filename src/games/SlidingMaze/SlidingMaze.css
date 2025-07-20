@@ -1,0 +1,170 @@
+.slidingmaze-container {
+  max-width: 95vw;
+  background: #0b2340;
+  border-radius: 18px;
+  box-shadow: 0 8px 38px #03204844, 0 1.5px 2px #016c86a0;
+  font-family: 'Orbitron', 'Segoe UI', Arial, sans-serif;
+  padding: 20px 4vw 30px 4vw;
+  margin: 30px auto 40px auto;
+  text-align: center;
+  color: #a7e5fd;
+  letter-spacing: 0.7px;
+}
+
+.slidingmaze-title {
+  font-family: 'Orbitron', 'Segoe UI', Arial, sans-serif;
+  background: linear-gradient(95deg,#34fcfc 40%,#1d4fff 91%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 2.2rem;
+  font-weight: bold;
+  letter-spacing: 7px;
+  margin: 2px 0 10px 0;
+  text-shadow: 0 6px 28px #0880d1b1, 0 2px 2px #181828;
+}
+
+.slidingmaze-info {
+  margin-bottom: 13px;
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  justify-content: center;
+  font-size:1.12rem;
+  font-weight:bold;
+}
+.slidingmaze-btn {
+  background: linear-gradient(90deg,#2979ef 20%,#3bf1d7 110%);
+  color: #fff;
+  font-weight: bolder;
+  font-size: 1rem;
+  padding: 8px 20px;
+  border-radius: 18px;
+  border: none;
+  margin-left: 8px;
+  cursor: pointer;
+  box-shadow: 0 3px 8px #3effef44;
+  transition: background 0.13s, color 0.14s;
+}
+.slidingmaze-btn:hover,
+.slidingmaze-btn:focus {
+  background: linear-gradient(100deg,#38ef7d 10%,#1a80f7 90%);
+  outline: 2px solid #6fecff94;
+  color: #131924;
+}
+
+.slidingmaze-grid {
+  display: grid;
+  border-radius: 14px;
+  box-shadow: 0 3px 22px #31bbf444, 0 0px 7px #03485818;
+  margin: 0 auto 20px auto;
+  background: #07476e;
+  user-select: none;
+  overflow: hidden;
+  width: max-content;
+  outline: none;
+}
+
+.slidingmaze-cell {
+  background: linear-gradient(120deg, #1066d7 90%, #64c6ff 120%);
+  box-shadow: 0 2px 9px #042b5c44, 0 0 6px #0c99c938;
+  border-radius: 10px;
+  border: 3.5px solid #2ad4ff;
+  margin: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  cursor: grab;
+  outline: none;
+  transition: background 0.18s, box-shadow 0.13s;
+}
+.slidingmaze-cell.wall {
+  background: repeating-linear-gradient(135deg, #203552 70%, #235, #204060 100%);
+  border-color: #184058;
+  box-shadow: 0 0 9px #113b53a0;
+}
+.slidingmaze-cell.ball {
+  z-index: 2;
+}
+.slidingmaze-cell .slidingmaze-ball-icon {
+  width: 28px;
+  height: 28px;
+  background: radial-gradient(#ff423b 50%,#ff0000 80%,#870001 100%);
+  border-radius: 50%;
+  border: 3.5px solid #fff2;
+  box-shadow: 0 1px 9px #f22, 0 3px 5px #0006;
+  margin: 1px 0 0 0;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.slidingmaze-cell.goal {
+  background: linear-gradient(120deg, #ffe655 80%, #eeaa00 130%);
+  border-color: #ffe655;
+  color: #573a08;
+}
+.slidingmaze-cell .slidingmaze-goal-icon {
+  font-size: 2.1rem;
+  pointer-events: none;
+  text-shadow: 0 1.3px 11px #fffc83c0;
+}
+.slidingmaze-cell.start {
+  background: linear-gradient(105deg, #4fffa2 70%, #11bd9a 130%);
+  border-color: #5cffb4;
+  color: #0d6242;
+  font-weight: bold;
+}
+.slidingmaze-cell .slidingmaze-start-icon {
+  font-size: 1.8rem;
+  pointer-events: none;
+  text-shadow: 0 0 7px #4fffa466;
+}
+.slbtn {
+  margin: 0 6px 0 0;
+  background: linear-gradient(95deg,#64f4ff 10%,#1dbaff 90%);
+  color: #042b5c;
+  border: none;
+  padding: 6px 17px;
+  font-size: 1.25rem;
+  border-radius: 11px;
+  font-family: inherit;
+  font-weight: bold;
+  box-shadow: 0 1px 5px #1ae3fc5c;
+  cursor: pointer;
+  transition: background 0.16s, color 0.14s;
+}
+.slbtn:active,.slbtn:focus { background: #b3ffcb; color: #244472;}
+.slidingmaze-controls {
+  margin: 8px auto 6px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.slidingmaze-winbox {
+  background: #eafcdd80;
+  color: #046408;
+  border-radius: 20px;
+  box-shadow: 0 0 33px #3ade7ecc, 0 0 7px #2a6f3f21;
+  border: 3px solid #36d57b;
+  margin: 24px auto 0 auto;
+  padding: 18px 22px 16px 22px;
+  font-weight: 700;
+  font-size: 1.24rem;
+  max-width: 340px;
+  animation: maze-fadein 0.9s;
+}
+@keyframes maze-fadein {
+  0% { opacity: 0; transform: scale(0.7);}
+  80% {opacity:0.93;}
+  100% { opacity: 1; transform: scale(1);}
+}
+
+@media (max-width:610px) {
+  .slidingmaze-container { padding: 9px 2vw 18vw 2vw;}
+  .slidingmaze-title { font-size: 1.35rem; }
+  .slidingmaze-cell { font-size: 1.3rem; }
+  .slidingmaze-grid { margin: 0 auto 17px auto;}
+  .slidingmaze-btn, .slbtn { font-size: 1rem; }
+}

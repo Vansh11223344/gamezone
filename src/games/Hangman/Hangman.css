@@ -1,0 +1,509 @@
+@import url("https://fonts.googleapis.com/css2?family=Creepster&family=Nosifer&family=Butcherman&display=swap");
+
+.gothic-hangman-wrapper {
+  display: block;
+  max-width: 800px;
+  margin: 0 auto;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.gothic-hangman-container {
+  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 30%, #16213e 70%, #0f0f0f 100%);
+  color: #e0e0e0;
+  font-family: "Butcherman", cursive;
+  position: relative;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 800px;
+  padding: 15px;
+  box-sizing: border-box;
+}
+
+.gothic-hangman-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 80%, rgba(120, 0, 0, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(0, 0, 120, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.gothic-hangman-game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.8) 0%, rgba(30, 30, 30, 0.6) 50%, rgba(0, 0, 0, 0.8) 100%);
+  border-bottom: 2px solid #444;
+  backdrop-filter: blur(10px);
+}
+
+.gothic-hangman-game-title {
+  font-family: "Nosifer", cursive;
+  font-size: 2rem;
+  color: #ff6b6b;
+  text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000, 0 0 40px #ff0000;
+  animation: gothic-hangman-flicker 3s infinite alternate;
+  letter-spacing: 3px;
+}
+
+@keyframes gothic-hangman-flicker {
+  0%,
+  18%,
+  22%,
+  25%,
+  53%,
+  57%,
+  100% {
+    opacity: 1;
+    text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000, 0 0 40px #ff0000;
+  }
+  20%,
+  24%,
+  55% {
+    opacity: 0.8;
+    text-shadow: none;
+  }
+}
+
+.gothic-hangman-game-stats {
+  display: flex;
+  gap: 15px;
+  font-size: 1rem;
+  font-family: "Creepster", cursive;
+}
+
+.gothic-hangman-stat {
+  color: #ffd700;
+  text-shadow: 0 0 10px #ffaa00;
+}
+
+.gothic-hangman-stat span {
+  color: #fff;
+  font-weight: bold;
+}
+
+.gothic-hangman-game-main {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 30px;
+  padding: 15px;
+}
+
+.gothic-hangman-gallows-section {
+  position: relative;
+  background: radial-gradient(circle, rgba(40, 40, 40, 0.8) 0%, rgba(20, 20, 20, 0.9) 70%);
+  border-radius: 10px;
+  padding: 15px;
+  border: 3px solid #333;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.8), inset 0 -5px 10px rgba(0, 0, 0, 0.5);
+  max-width: 250px;
+}
+
+.gothic-hangman-gallows-container {
+  width: 200px;
+  height: 280px;
+  position: relative;
+}
+
+.gothic-hangman-gallows-svg-container {
+  width: 100%;
+  height: 100%;
+}
+
+.gothic-hangman-gallows-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.7));
+}
+
+.gothic-hangman-part {
+  animation: gothic-hangman-fadeIn 0.5s ease-in;
+}
+
+@keyframes gothic-hangman-fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.gothic-hangman-atmosphere-effects {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.gothic-hangman-fog {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: linear-gradient(to top, rgba(200, 200, 200, 0.1), transparent);
+  animation: gothic-hangman-drift 8s ease-in-out infinite alternate;
+}
+
+@keyframes gothic-hangman-drift {
+  0% {
+    transform: translateX(-10px);
+  }
+  100% {
+    transform: translateX(10px);
+  }
+}
+
+.gothic-hangman-game-info {
+  max-width: 350px;
+  flex: 1;
+}
+
+.gothic-hangman-word-container {
+  text-align: center;
+  margin-bottom: 15px;
+  background: linear-gradient(135deg, rgba(50, 50, 50, 0.3), rgba(30, 30, 30, 0.5));
+  border-radius: 8px;
+  padding: 10px;
+  border: 2px solid #555;
+  box-shadow: inset 0 5px 8px rgba(0, 0, 0, 0.3);
+}
+
+.gothic-hangman-word-display {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.gothic-hangman-word-letter {
+  display: inline-block;
+  font-size: 1.8rem;
+  font-family: "Creepster", cursive;
+  width: 35px;
+  height: 45px;
+  line-height: 45px;
+  text-align: center;
+  border-bottom: 3px solid #666;
+  color: transparent;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.gothic-hangman-word-letter.revealed {
+  color: #ffd700;
+  border-bottom-color: #ffd700;
+  text-shadow: 0 0 15px #ffaa00;
+  transform: scale(1.1);
+}
+
+.gothic-hangman-word-meta {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  font-size: 0.8rem;
+}
+
+.gothic-hangman-category {
+  color: #87ceeb;
+  font-weight: bold;
+  padding: 4px 8px;
+  background: rgba(135, 206, 235, 0.2);
+  border-radius: 12px;
+  border: 1px solid #87ceeb;
+}
+
+.gothic-hangman-difficulty {
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 12px;
+  border: 1px solid currentColor;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.gothic-hangman-hint-section {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.gothic-hangman-hint-button {
+  background: linear-gradient(135deg, #8b0000, #4b0000);
+  color: #fff;
+  border: 2px solid #ff4444;
+  padding: 8px 15px;
+  font-size: 0.9rem;
+  font-family: "Creepster", cursive;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 10px #000;
+  box-shadow: 0 4px 8px rgba(139, 0, 0, 0.4);
+}
+
+.gothic-hangman-hint-button:hover {
+  background: linear-gradient(135deg, #ff4444, #8b0000);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(255, 68, 68, 0.4);
+}
+
+.gothic-hangman-hint-button.active {
+  background: linear-gradient(135deg, #ff6b6b, #ff4444);
+}
+
+.gothic-hangman-hint-text {
+  margin-top: 8px;
+  padding: 8px;
+  background: rgba(139, 0, 0, 0.2);
+  border: 1px solid #8b0000;
+  border-radius: 6px;
+  font-style: italic;
+  color: #ffcccc;
+  animation: gothic-hangman-slideDown 0.3s ease;
+}
+
+@keyframes gothic-hangman-slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.gothic-hangman-hint-label {
+  color: #ff6b6b;
+  font-weight: bold;
+}
+
+.gothic-hangman-alphabet-container {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  margin-bottom: 15px;
+  padding: 10px;
+  background: rgba(30, 30, 30, 0.5);
+  border-radius: 8px;
+  border: 1px solid #444;
+}
+
+.gothic-hangman-letter-button {
+  width: 45px;
+  height: 45px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: 2px solid #666;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+  color: #e0e0e0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: "Butcherman", cursive;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+.gothic-hangman-letter-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #4a4a4a, #3a3a3a);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+  border-color: #888;
+}
+
+.gothic-hangman-letter-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.gothic-hangman-letter-button.correct {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border-color: #22c55e;
+  color: #fff;
+  box-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
+}
+
+.gothic-hangman-letter-button.wrong {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  border-color: #ef4444;
+  color: #fff;
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+}
+
+.gothic-hangman-game-status {
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+  font-family: "Creepster", cursive;
+}
+
+.gothic-hangman-tries-remaining {
+  color: #ffd700;
+  text-shadow: 0 0 8px #ffaa00;
+  padding: 8px;
+  background: rgba(255, 215, 0, 0.1);
+  border: 1px solid #ffd700;
+  border-radius: 6px;
+}
+
+.gothic-hangman-skull {
+  font-size: 1.2rem;
+  margin-right: 6px;
+}
+
+.gothic-hangman-victory-message {
+  color: #22c55e;
+  text-shadow: 0 0 15px #22c55e;
+  padding: 12px;
+  background: rgba(34, 197, 94, 0.2);
+  border: 2px solid #22c55e;
+  border-radius: 8px;
+  animation: gothic-hangman-pulse 2s infinite;
+}
+
+.gothic-hangman-defeat-message {
+  color: #ef4444;
+  text-shadow: 0 0 15px #ef4444;
+  padding: 12px;
+  background: rgba(239, 68, 68, 0.2);
+  border: 2px solid #ef4444;
+  border-radius: 8px;
+  animation: gothic-hangman-shake 0.5s;
+}
+
+@keyframes gothic-hangman-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes gothic-hangman-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+.gothic-hangman-victory-icon,
+.gothic-hangman-defeat-icon {
+  font-size: 1.3rem;
+  margin-right: 6px;
+}
+
+.gothic-hangman-new-game-button {
+  display: block;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-family: "Butcherman", cursive;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 12px rgba(99, 102, 241, 0.3);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.gothic-hangman-new-game-button:hover {
+  background: linear-gradient(135deg, #7c3aed, #6366f1);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px rgba(124, 58, 237, 0.4);
+}
+
+@media (max-width: 768px) {
+  .gothic-hangman-wrapper {
+    max-width: 100%;
+    padding: 0 10px;
+  }
+
+  .gothic-hangman-container {
+    max-width: 100%;
+    padding: 10px;
+  }
+
+  .gothic-hangman-game-main {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+  }
+
+  .gothic-hangman-game-header {
+    padding: 8px 12px;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .gothic-hangman-game-title {
+    font-size: 1.8rem;
+  }
+
+  .gothic-hangman-gallows-container {
+    width: 180px;
+    height: 250px;
+  }
+
+  .gothic-hangman-alphabet-container {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .gothic-hangman-letter-button {
+    width: 35px;
+    height: 35px;
+    font-size: 0.9rem;
+  }
+
+  .gothic-hangman-word-letter {
+    font-size: 1.4rem;
+    width: 28px;
+    height: 35px;
+    line-height: 35px;
+  }
+
+  .gothic-hangman-hint-section {
+    margin-bottom: 10px;
+  }
+
+  .gothic-hangman-hint-button {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+
+  .gothic-hangman-hint-text {
+    font-size: 0.8rem;
+    padding: 6px;
+  }
+
+  .gothic-hangman-game-status {
+    font-size: 0.9rem;
+  }
+
+  .gothic-hangman-new-game-button {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+  }
+}

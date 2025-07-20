@@ -1,0 +1,311 @@
+:root {
+  --ludo-board-size: 450px;
+  --cell-size: calc(var(--ludo-board-size) / 15);
+  --token-size: 40px;
+  --dice-size: 48px;
+}
+
+.ludo-outer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0 28px 0;
+  background: #fffbe1;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+/* Setup modal */
+.ludo-setup-modal {
+  background: #fffbe1;
+  padding: 30px 22px 18px 22px;
+  border-radius: 16px;
+  box-shadow: 0 4px 36px #ffda7877, 0 2px 12px #015f6f18;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  max-width: 410px;
+  margin: 56px auto 0 auto;
+  border: 2.1px solid #d6c687;
+}
+
+.ludo-setup-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  padding: 9px 11px;
+  background: #fefaee;
+  border-radius: 8px;
+  border: 1.2px solid #f6ea9e;
+}
+
+/* Top bar */
+.ludo-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: var(--ludo-board-size);
+  margin-bottom: 16px;
+  background: #fffded;
+  padding: 11px 18px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #ffc80011, 0 0.5px 7px #18b6710f;
+  border: 2.5px solid #fdf5bb;
+  min-width: 220px;
+}
+
+.ludo-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-weight: 600;
+  font-size: 1.05em;
+}
+
+.ludo-topbar-center {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Dice styling */
+.ludo-dice-wrap {
+  display: flex;
+}
+.ludo-dice-btn {
+  background: linear-gradient(145deg, #fffecd 75%, #fffbe1 97%);
+  border-radius: 9px !important;
+  border: 2.1px solid #f5c31e !important;
+  padding: 7px 13px !important;
+  min-width: 0 !important;
+  box-shadow: 0 2px 18px #dfb80813;
+  transition: background 0.17s, box-shadow 0.12s, border-color 0.15s, transform 0.14s !important;
+}
+.ludo-dice-btn:active:not(:disabled),
+.ludo-dice-btn:focus {
+  background: #fff6d2;
+  border-color: #ffc400 !important;
+}
+.ludo-dice-btn:hover:not(:disabled) {
+  transform: scale(1.07) !important;
+  border-color: #ffb600 !important;
+  background: #fff7a6;
+}
+
+/* Dice face - clean, bold */
+.die {
+  width: var(--dice-size);
+  height: var(--dice-size);
+  background: #fffdfa;
+  border-radius: 10px;
+  border: 2.2px solid #8e781b;
+  box-shadow: 0 0 2px #ebbb0088, 0 1px 5px #fbe63e15;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-weight: 900;
+  font-size: 1.6em;
+  color: #f5b300;
+  position: relative;
+  margin-left: 5px;
+  letter-spacing: 1.5px;
+}
+
+/* Dice face unicode for visual perfectness */
+.die.num-1 { color: #e74c3c; }
+.die.num-2 { color: #2ecc71; }
+.die.num-3 { color: #f1c40f; }
+.die.num-4 { color: #3498db; }
+.die.num-5 { color: #8e44ad; }
+.die.num-6 { color: #f5b300; }
+
+/* Board wrapper */
+.ludo-board-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.ludo-board {
+  position: relative;
+  width: var(--ludo-board-size);
+  height: var(--ludo-board-size);
+  border-radius: 23px;
+  overflow: hidden;
+  box-shadow: 0 4px 32px #edda731a;
+  border: 5px solid #e3ba2b;
+  background: #fffbe1;
+}
+
+/* SVG board colors */
+.ludo-board svg {
+  background: #fffbe1;
+  display: block;
+}
+
+/* Tokens */
+.ludo-token {
+  position: absolute !important;
+  width: var(--token-size) !important;
+  height: var(--token-size) !important;
+  border-radius: 50% !important;
+  border: 2.5px solid #fff !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 2.5px 8px #50471e3c;
+  z-index: 10 !important;
+  transition: box-shadow 0.13s, transform 0.12s, border 0.13s;
+  outline: 2px solid #444;
+}
+
+.ludo-token.red {
+  background: radial-gradient(circle at 44% 40%, #ffdbd9 15%, #e74c3c 94%) !important;
+  outline: 2.2px solid #e74c3c !important;
+}
+
+.ludo-token.green {
+  background: radial-gradient(circle at 44% 40%, #e9ffe6 11%, #2ecc71 91%) !important;
+  outline: 2.2px solid #2ecc71 !important;
+}
+
+.ludo-token.yellow {
+  background: radial-gradient(circle at 44% 40%, #fffada 15%, #f1c40f 94%) !important;
+  outline: 2.2px solid #f1c40f !important;
+}
+
+.ludo-token.blue {
+  background: radial-gradient(circle at 44% 40%, #d6edfc 18%, #3498db 92%) !important;
+  outline: 2.2px solid #3498db !important;
+}
+
+.ludo-token.movable {
+  box-shadow: 0 0 18px 6px #ffd70066;
+  animation: ludo-move-pulse 1.15s infinite;
+}
+
+@keyframes ludo-move-pulse {
+  0%   { box-shadow: 0 0 6px 2px #ffd70077, 0 0 0 3px #3498db14;}
+  50%  { box-shadow: 0 0 18px 9px #fffad166, 0 0 0 6px #2ecc7133;}
+  100% { box-shadow: 0 0 8px 2px #ffd70077, 0 0 0 4px #e74c3c22;}
+}
+
+/* Pawn center dot, classic Ludo disc */
+.pawn-inner {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #f8f8f2;
+  border: 1.7px solid #c6c19b;
+  box-shadow: 0 0 2.8px #ffd4009c;
+}
+
+/* Home/corners color dots (for setup/turn display) */
+.color-circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2.5px solid #999;
+  margin-right: 3px;
+  box-shadow: 0 1px 7px #fcc80026, 0 1px 2px #fff8 .1;
+}
+
+/* Winners section */
+.ludo-winners {
+  background: #fffbe1;
+  padding: 14px 19px;
+  border-radius: 12px;
+  box-shadow: 0 2px 7px #ffc8010f;
+  border: 2px solid #ffe475;
+  text-align: center;
+  font-weight: 700;
+  min-height: 38px;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2d2d27;
+}
+
+/* Responsive for small screens */
+@media (max-width: 600px) {
+  :root {
+    --ludo-board-size: 98vw;
+    --token-size: 8vw;
+    --dice-size: 12vw;
+  }
+  .ludo-outer, .ludo-board, .ludo-board svg {
+    min-width: 99vw !important;
+    width: 99vw !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    max-width: 100vw !important;
+    margin: 0 !important;
+  }
+  .ludo-topbar {
+    padding: 9px 2vw;
+    font-size: 1em;
+    margin-bottom: 0.7em;
+    min-width: 0;
+  }
+  .ludo-setup-modal {
+    margin: 4vw 0 0 0;
+    width: 97vw !important;
+    min-width: unset !important;
+    padding: 8vw 1vw 13vw 1vw !important;
+  }
+  .ludo-winners {
+    padding: 6px 1vw;
+    font-size: 0.98em;
+    border-radius: 7vw;
+    margin: 1vw 0 0 0;
+  }
+}
+
+/* Mui + button improvements */
+.MuiAlert-root {
+  border-radius: 1.15em !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 11px #ffc80022 !important;
+  margin: 3px 0 14px 0;
+}
+.MuiButton-contained {
+  border-radius: 7.5px !important;
+  text-transform: none !important;
+  font-weight: 700 !important;
+  color: #fffbe1;
+  background: linear-gradient(90deg, #ffc801 80%, #f7ae17 100%) !important;
+  box-shadow: 0 2px 11px #ffea6422 !important;
+}
+.MuiButton-contained:hover {
+  background: linear-gradient(90deg, #ffd93e 60%, #ffca00 100%) !important;
+  color: #000814 !important;
+  transform: translateY(-1.5px) scale(1.04) !important;
+  box-shadow: 0 6px 18px #ffc80177 !important;
+}
+.MuiSelect-select {
+  border-radius: 6.5px !important;
+  font-weight: 600 !important;
+  background: #fffbe16d !important;
+}
+.MuiTypography-root {
+  font-family: 'Segoe UI', Arial, sans-serif !important;
+}
+.MuiIconButton-root {
+  border-radius: 13px !important;
+  transition: background 0.12s, transform 0.15s;
+}
+.MuiIconButton-root:hover {
+  transform: scale(1.13) !important;
+  background: #fffad1cc !important;
+}
+
+/* Ludo.css */

@@ -1,0 +1,123 @@
+.jsq-container {
+  max-width: 540px;
+  margin: 32px auto 30px auto;
+  padding: 22px 2vw 34px 2vw;
+  background: #141218;
+  border-radius: 19px;
+  box-shadow: 0 8px 44px #122466c0;
+  font-family: 'Share Tech Mono', 'Arial', monospace;
+  color: #f5f5fa;
+  text-align: center;
+  user-select: none;
+  letter-spacing: 0.5px;
+}
+
+.jsq-title {
+  font-size: 2.15rem;
+  font-weight: bold;
+  color: #17ffe2;
+  letter-spacing: 7px;
+  margin-bottom: 8px;
+  text-shadow: 0 2px 17px #49ffce80, 0 1.5px 1px #343b;
+}
+
+.jsq-bar {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 1.13rem;
+  color: #28ffc1;
+}
+.jsq-btn {
+  background: linear-gradient(95deg,#17ffe2 10%,#ffd148 90%);
+  color: #183139;
+  font-weight: bold;
+  font-size: 1.07rem;
+  padding: 7px 22px;
+  border-radius: 13px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2.5px 11px #1afcfc50;
+  margin-left: 6px;
+  transition: background 0.14s, color 0.16s;
+  outline: none;
+}
+.jsq-btn:hover,.jsq-btn:focus {
+  background: linear-gradient(90deg,#ffd148 8%,#17ffe2 100%);
+  color: #120a1c;
+  outline:2.8px solid #49ffce;
+}
+
+/* SVG holds the actual game */
+.jsq-canvas-wrap {
+  margin: 0 auto 12px auto;
+  max-width: 99vw;
+  border-radius: 17px;
+  background: #191828;
+  box-shadow: 0 4px 31px #49ffce14, 0 0 4px #2711ad1a;
+  outline: none;
+  position: relative;
+  cursor: pointer;
+  transition: box-shadow 0.14s;
+  overflow: hidden;
+}
+.jsq-canvas-wrap:focus { box-shadow: 0 0 0 3px #49ffce,0 4px 24px #17ffe245; }
+
+/* Game Over overlay */
+.jsq-overlay {
+  position: absolute;
+  left: 0; top: 0; width: 100%; height: 100%;
+  background: rgba(21,22,34,0.81);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+}
+.jsq-overbox {
+  background: #242646e9;
+  color: #fd4059;
+  border-radius: 18px;
+  border: 2.3px solid #17ffe2;
+  padding: 23px 12px 17px 12px;
+  font-size: 1.24rem;
+  font-weight: bold;
+  box-shadow: 0 0 28px #17ffe296, 0 0 11px #fd415399;
+  max-width: 243px;
+  margin: 0 auto;
+  animation: jsqfade .8s;
+}
+@keyframes jsqfade {
+  0% { opacity: 0; transform: scale(.69);}
+  100% {opacity:1; transform:scale(1);}
+}
+
+.jsq-instructions {
+  margin: 12px 0 4px 0;
+  color: #fffbda;
+  font-size: 1.09rem;
+  text-shadow: 0 1.5px 13px #361aff66;
+  font-weight: 500;
+  letter-spacing: 1.1px;
+  line-height: 1.5;
+  opacity: .82;
+}
+
+.jsq-footer {
+  margin-top: 14px;
+  color: #49ffcebd;
+  font-size: 1.07rem;
+  opacity: .81;
+  letter-spacing: 1px;
+}
+
+/* Responsive */
+@media (max-width:620px) {
+  .jsq-container { padding: 7px 2vw 14vw 2vw;}
+  .jsq-title { font-size: 1.33rem;}
+  .jsq-bar { font-size:.99rem;}
+  .jsq-canvas-wrap { min-width: 99vw; }
+  .jsq-btn { font-size: .99rem;}
+}

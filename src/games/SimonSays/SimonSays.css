@@ -1,0 +1,142 @@
+.simon-outer {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #242c3b 56%, #090d15 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  padding: 0;
+  color: #e9eaf5;
+}
+.simon-title {
+  font-family: 'Orbitron', 'Segoe UI', Arial, sans-serif;
+  letter-spacing: 3px;
+  color: #fed32d;
+  font-weight: bold;
+  font-size: 2.3em;
+  margin: 2.4em 0 1em 0;
+  text-shadow: 0 2px 18px #fdd62f3d, 0 0px 2px #1b170a;
+  text-align: center;
+}
+.simon-gamebox {
+  background: #232a3c;
+  border-radius: 40px;
+  box-shadow: 0 8px 24px #353f7162;
+  padding: 1.1em 2em 2.4em 2em;
+  margin-bottom: 1.1em;
+}
+.simon-board {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  margin: 0 auto;
+  background: #24282b;
+  box-shadow: 0 2px 15px #242c3480;
+  display: grid;
+  grid-template: 2fr 2fr / 2fr 2fr;
+  gap: 0;
+  position: relative;
+}
+
+.simon-pad {
+  border: none;
+  outline: none;
+  width: 145px;
+  height: 145px;
+  border-radius: 200px 0 0 0;
+  margin: 0;
+  box-shadow: 0 2px 18px #0003;
+  font-size: 2em;
+  cursor: pointer;
+  opacity: 0.88;
+  transition: background 0.12s, box-shadow 0.09s, opacity 0.19s;
+  position: relative;
+  z-index: 1;
+}
+.simon-green  { background: linear-gradient(135deg, #22d465 70%, #0a6648 130%);}
+.simon-red    { background: linear-gradient(135deg, #ff3632 70%, #a9302b 130%);}
+.simon-yellow { background: linear-gradient(135deg, #ffed30 80%, #f38616 140%);}
+.simon-blue   { background: linear-gradient(135deg, #2a73fd 70%, #0e157d 130%);}
+.simon-green.active, .simon-pad.simon-green:active { background: #47ffae; opacity: 1; box-shadow: 0 0 44px #48ffb3a3; }
+.simon-red.active, .simon-pad.simon-red:active { background: #ff7580; opacity: 1; box-shadow: 0 0 44px #ff5a70a4;}
+.simon-blue.active, .simon-pad.simon-blue:active { background: #45beff; opacity: 1; box-shadow: 0 0 41px #50c5ff93;}
+.simon-yellow.active, .simon-pad.simon-yellow:active { background: #fff48a; opacity: 1; box-shadow: 0 0 41px #ffef71aa;}
+
+.simon-pad.simon-green { grid-area: 1/1; border-radius: 180px 0 0 0;}
+.simon-pad.simon-red   { grid-area: 1/2; border-radius: 0 180px 0 0;}
+.simon-pad.simon-blue  { grid-area: 2/1; border-radius: 0 0 0 180px;}
+.simon-pad.simon-yellow{ grid-area: 2/2; border-radius: 0 0 180px 0;}
+
+.simon-center {
+  position: absolute;
+  top: 60px;
+  left: 60px;
+  width: 180px;
+  height: 180px;
+  background: #202322;
+  border-radius: 50%;
+  border: 5px solid #151922;
+  box-shadow: 0 0 44px #ffe45223;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.simon-score {
+  font-size: 2.2em;
+  color: #fed32d;
+  font-family: 'Orbitron', Arial, sans-serif;
+  font-weight: bold;
+  margin-bottom: 0.22em;
+  letter-spacing: 2px;
+}
+.simon-status {
+  color: #eee;
+  font-weight: bold;
+  font-size: 1.22em;
+  margin-bottom: .72em;
+  letter-spacing: .08em;
+}
+.simon-status.wrong {
+  color: #df273e;
+  text-shadow: 0 0 7px #ff677a93;
+}
+.simon-btn {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 1em;
+  background: #fed32d;
+  color: #fffffe;
+  border: none;
+  border-radius: 19px;
+  padding: 11px 29px 10px 29px;
+  font-weight: bold;
+  margin-bottom: .5em;
+  cursor: pointer;
+  margin-right: 8px;
+  margin-left: 8px;
+  box-shadow: 0 1px 11px #f7f15319;
+  transition: background 0.13s;
+  min-width: 88px;
+}
+.simon-btn:hover { background: #fff6b7; color: #2f3705;}
+.simon-strict { background: #222;}
+.simon-strict.strict-on { background: #df273e; color: #fff; border:2px solid #fff; }
+.simon-footer {
+  margin-top: 2.1em;
+  background: #222a41af;
+  padding: 19px 2.7em 17px 2.7em;
+  border-radius: 25px;
+  color: #ffe167;
+  font-size: 1.03em;
+  box-shadow: 0 1px 19px #1f23394c;
+}
+
+@media (max-width: 520px) {
+  .simon-title { font-size: 1.25em; margin-top: 1.3em; }
+  .simon-gamebox { padding: 0.7em 5.6em 1.9em .2em;}
+  .simon-board { width: 210px; height: 210px;}
+  .simon-center { left: 82px; top:82px; width:120px; height:120px; }
+  .simon-score { font-size: 1.13em;}
+  .simon-footer { padding: 12px 1.1em 11px 1.1em; font-size:0.97em;}
+}

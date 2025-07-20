@@ -1,0 +1,222 @@
+.reversi-container {
+  /* Beautiful felt table look, glassy highlight, dark fade edges */
+  min-height: 100vh;
+  min-width: 100vw;
+  background:
+    radial-gradient(ellipse 130% 90% at 62% 5%, #2fd65d22 0%, #14391200 53%, #0000 80%),
+    linear-gradient(150deg, #4caf50 0 62%, #23681d 90%),
+    radial-gradient(ellipse at top right, #e4ffe980 7%, #0000 61%),
+    radial-gradient(ellipse 80% 33% at 52% 87%, #215925 20%, #11390f 100%);
+  border: none;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  font-family: 'Segoe UI', Verdana, Geneva, Arial, sans-serif;
+  /* Board card styles below */
+  padding: 0;
+  margin: 0;
+}
+
+.reversi-title {
+  font-size: 2.1rem;
+  font-weight: bold;
+  text-align: center;
+  color: #eaffc5;
+  letter-spacing: 2px;
+  margin: 76px 0 16px 0;
+  text-shadow: 0 4px 18px #19662477, 0 2px 3px #060d07;
+  background: rgba(44,68,41,0.23);
+  padding: 8px 0;
+  border-radius: 7px;
+}
+
+.reversi-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 8px 15px 8px 12px;
+  font-size: 1.14rem;
+  color: #eaffd4;
+  background: rgba(37, 71, 27, 0.68);
+  border-radius: 9px;
+  box-shadow: 0 4px 12px #13402133;
+  width: 388px;
+  max-width: 98vw;
+}
+
+.reversi-status {
+  min-width: 120px;
+  text-align: right;
+  color: #ffe484;
+  font-weight: bold;
+  text-shadow: 0 1px 2px #343;
+}
+
+.reversi-board {
+  display: grid;
+  gap: 0;
+  background:
+    repeating-linear-gradient(135deg, #3abe3c66 0 17px, #146b4e00 18px 34px),
+    #185b25;
+  border: 5px solid #164516;
+  border-radius: 12px;
+  box-shadow: 0 8px 40px #22441432, 0 0 0 15px #24813317;
+  margin: 0 auto;
+  margin-bottom: 15px;
+  margin-top: 8px;
+  width: 377px;
+  max-width: 94vw;
+  aspect-ratio: 1/1;
+}
+
+.reversi-cell {
+  width: 44px;
+  height: 44px;
+  background:
+    linear-gradient(135deg, #308030 0%, #256c25 100%),
+    url("data:image/svg+xml,%3Csvg fill='none' stroke='%23196616' stroke-opacity='0.18' stroke-width='1.5' viewBox='0 0 44 44' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='1.5' y='1.5' width='41' height='41' rx='7.5'/%3E%3C/svg%3E");
+  border: 2px solid #164516;
+  box-shadow: 0 1.5px 0 #366b36af inset;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: outline 0.12s;
+  outline: none;
+}
+
+.reversi-cell:hover,
+.reversi-cell.can-move {
+  outline: 2.5px solid #ffe484;
+  z-index: 2;
+}
+
+.reversi-cell.can-move .move-dot {
+  background: #ffe484;
+  opacity: 0.55;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+.last-move::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border: 2px dashed #fff56e;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 3;
+  animation: blink 1s 2;
+}
+@keyframes blink {
+  0% { opacity: 0.95; }
+  50% { opacity: 0.3;}
+  100% { opacity: 1; }
+}
+
+/* Pieces */
+.disc {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1.7px solid #45454566;
+  box-shadow:
+     0 3px 7px #0008 inset,
+     0 0 1px #fff7;
+}
+.disc.black {
+  background: radial-gradient(ellipse at 60% 35%, #626262 40%, #000 100%);
+  border: 2.3px solid #1a1a1a;
+  box-shadow:
+     0 1.5px 10px #4a4a4a55 inset,
+     0 0 1px #fff7;
+}
+.disc.white {
+  background: radial-gradient(ellipse at 48% 25%, #f9f9f9 55%, #c0c0c0 100%);
+  border: 2.1px solid #d8d8d8;
+  box-shadow:
+     0 2.5px 18px #fff7 inset,
+     0 0 2px #0003;
+}
+
+.move-dot {
+  pointer-events: none;
+  background: #ffe484;
+  opacity: 0.65;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+/* Button */
+.reversi-restart {
+  font-size: 1.03rem;
+  background: #e7f5d9;
+  color: #235c2b;
+  border: 1.5px solid #17461a;
+  font-weight: bold;
+  border-radius: 6px;
+  padding: 4px 18px;
+  margin: 0 6px;
+  box-shadow: 0 1.4px 2.8px #13320211;
+  cursor: pointer;
+  transition: background 0.15s, color 0.12s;
+}
+.reversi-restart:hover, .reversi-restart:focus {
+  background: #ffe484;
+  color: #543e00;
+}
+
+/* Inline disc colors in toolbar */
+.disc.black, .disc.white {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  margin: 0 4px 0 0;
+  vertical-align: middle;
+  border-width: 1.5px;
+}
+
+.reversi-footer {
+  margin-top: 28px;
+  color: #dbeccc;
+  text-align: center;
+  font-size: 1.12rem;
+  opacity: 0.83;
+  padding: 8px 0 0 0;
+  letter-spacing: .02em;
+}
+
+/* scroll on mobile if board is wide */
+@media (max-width: 490px) {
+  .reversi-toolbar {
+    padding: 6px 2.5vw;
+    width: 99vw;
+    min-width: unset;
+    font-size:1rem;
+    box-sizing: border-box;
+  }
+  .reversi-cell {
+    width: 10vw;
+    height: 10vw;
+    min-width: 25px;
+    min-height: 25px;
+  }
+  .disc {
+    width: 7vw;
+    height: 7vw;
+    min-width: 18px;
+    min-height: 18px;
+  }
+  .disc.black, .disc.white {
+    width: 13px;
+    height: 13px;
+    min-width: 13px;
+  }
+}

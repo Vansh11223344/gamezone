@@ -1,0 +1,127 @@
+.ttt-root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 2.5rem;
+}
+
+/* Game Section Background */
+.ttt-section {
+  background: linear-gradient(135deg, #ecf2ff 65%, #fafbd7 100%);
+  border: 2.5px solid #a6c9ff;
+  box-shadow: 0 8px 30px #24246a11;
+  border-radius: 1.5rem;
+  padding: 2.2rem 2.3rem 1.7rem 2.3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ttt-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #232ceb;
+}
+
+.ttt-board {
+  display: grid;
+  grid-template-columns: repeat(3, 70px);
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.ttt-square {
+  width: 70px;
+  height: 70px;
+  font-size: 2rem;
+  border-radius: 0.5rem;
+  border: 2px solid #232ceb;
+  background: #f8f8ff;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+
+.ttt-square:hover {
+  background: #dee3fa;
+}
+
+.ttt-winner {
+  color: #4bb543;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.ttt-turn {
+  color: #232ceb;
+  font-size: 1.1rem;
+}
+
+.ttt-reset {
+  margin-top: 1rem;
+  padding: 0.4rem 1.4rem;
+  background: #232ceb;
+  color: #fff;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.18s;
+}
+.ttt-reset:hover { background: #1c1a99; }
+
+/* Modal for choosing mode */
+.ttt-modal {
+  margin: 120px auto 0;
+  text-align: center;
+}
+
+/* Modal section colored background */
+.ttt-mode-section {
+  background: linear-gradient(135deg, #effaf8 60%, #dde2fc 100%);
+  border: 2.3px solid #a2cfa9;
+  border-radius: 1.1em;
+  box-shadow: 0 6px 28px #00000013;
+  padding: 2.7em 2.4em 2.2em 2.4em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 260px;
+}
+
+.ttt-mode-section h2 {
+  margin-bottom: 2rem;
+  letter-spacing: .13em;
+  font-size: 2em;
+  color: #163607;
+}
+
+.ttt-modal button {
+  margin: 1rem;
+  padding: 0.7rem 2.4rem;
+  font-size: 1.16rem;
+  background: #232ceb;
+  color: #fff;
+  border-radius: 0.7rem;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  cursor: pointer;
+}
+
+@media (max-width: 500px) {
+  .ttt-section {
+    padding: 1.2rem 0.3rem 1.3rem 0.3rem;
+    border-radius: 1.05rem;
+  }
+  .ttt-modal .ttt-mode-section {
+    min-width: 180px;
+    padding: 1.8em 0.8em 1.5em 0.8em;
+  }
+  .ttt-board {
+    grid-template-columns: repeat(3, 17vw);
+  }
+  .ttt-square {
+    width: 17vw;
+    height: 17vw;
+    font-size: 1.4em;
+  }
+}
