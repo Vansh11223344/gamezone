@@ -65,7 +65,7 @@ export const games = [
     icon: ExtensionIcon,
   },
   {
-    name: "Nokia Snake",
+    name: "Snake Xenzia",
     route: "snake",
     folder: "Snake",
     description: "Old school, eat & grow.",

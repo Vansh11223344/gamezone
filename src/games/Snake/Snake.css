@@ -1,9 +1,9 @@
 .snake-nokia-bg {
   text-align: center;
   padding: 2rem;
-  max-width: 90vw;
+  max-width: 250vw;
   margin: 0 auto;
-  background: linear-gradient(135deg, #282d1f 0%, #17381a 90%);
+  /* background: linear-gradient(135deg, #282d1f 0%, #17381a 90%); */
   border-radius: 1.1em;
   box-shadow: 0 4px 32px rgba(0, 0, 0, 0.4);
   display: flex;
@@ -34,9 +34,11 @@
   font-size: 1.2rem;
   color: #b7ff6d;
 }
+
 .snake-score-label {
   color: #b7ff6d;
 }
+
 .snake-score-val {
   font-weight: bold;
   color: #9fff45;
@@ -68,15 +70,17 @@
   cursor: pointer;
 }
 
-.snake-board {
+.snake-board-outer {
   position: relative;
   background: #022e15;
-  border: 6px inset #7eff92;
+  border: 6px solid #7eff92;
   box-shadow: 0 4px 36px rgba(26, 81, 32, 0.87);
-  margin-bottom: 1rem;
-  outline: none;
-  box-sizing: content-box;
   overflow: hidden;
+  box-sizing: border-box;
+}
+
+.snake-board-inner {
+  position: relative;
 }
 
 /* Snake and food fit within boxes (centering via margin in JSX!) */
@@ -88,11 +92,13 @@
   box-shadow: 0 0 3px rgba(80, 210, 49, 0.7);
   border: 2px solid #8abb36;
 }
+
 .snake-head {
   background: linear-gradient(135deg, #e2f98b 60%, #67e974 100%);
   box-shadow: 0 0 9px #faffad;
   border: 2.3px solid #b6e25a;
 }
+
 .snake-food {
   position: absolute;
   border-radius: 50%;
@@ -107,10 +113,12 @@
   pointer-events: none;
   z-index: 0;
 }
+
 .snake-grid-vert {
   width: 2px;
   background: #355f35;
 }
+
 .snake-grid-horiz {
   height: 2px;
   background: #355f35;
@@ -124,6 +132,7 @@
   flex-direction: column;
   align-items: center;
 }
+
 .snake-btn {
   background: linear-gradient(145deg, #97f876, #2e7723);
   color: #142d06;
@@ -138,17 +147,22 @@
   margin: 0.23rem 0.25rem 0.13rem 0;
   display: inline-block;
 }
+
 .snake-btn-stop {
   background: linear-gradient(145deg, #ffd87e, #b34a19);
   color: #341406;
   border-color: #ffc280;
 }
+
 .snake-btn:hover {
   background: #b8ffb1;
   color: #0a2e0b;
   transform: scale(1.05);
 }
-.snake-btn:active { transform: scale(0.97); }
+
+.snake-btn:active {
+  transform: scale(0.97);
+}
 
 .snake-instructions {
   font-family: 'Fira Mono', 'Consolas', monospace;
@@ -169,11 +183,13 @@
   align-items: center;
   margin-top: 0.6rem;
 }
+
 .snake-controls-dpad .mid-row {
   display: flex;
   gap: 1rem;
   margin: 0.4rem 0;
 }
+
 .dir-btn {
   user-select: none;
   width: 46px;
@@ -190,32 +206,52 @@
   transition: color 0.2s, background 0.18s;
   margin: 0;
 }
+
 .dir-btn:hover {
   background: #e4ffe4;
   color: #158009;
   transform: scale(1.05);
 }
+
 .empty-dpad-cell {
   width: 3rem;
   height: 3rem;
 }
+
 .snake-footer {
   margin-top: 1rem;
   color: #b2d39a;
   font-family: 'Fira Mono', 'Consolas', monospace;
   opacity: 0.7;
 }
+
 @media (max-width: 720px) {
-  .snake-nokia-bg { 
-  padding: 1rem;
-  min-height: 100vh;
-  min-width: 110vw;
-  width: 120vw;
-  height: 115vh; }
-  .snake-nokia-container { padding: 1rem; }
-  .snake-score-row { font-size: 1rem; }
-  .snake-btn { font-size: 0.9rem; padding: 0.4rem 1rem; }
-  .snake-speed-sel { font-size: 0.9rem; }
-  .dir-btn { font-size: 1.4em; width: 34px; height: 34px; line-height: 32px; }
-  .empty-dpad-cell { width: 2rem; height: 2rem; }
+  .snake-nokia-bg {
+    padding: 1rem;
+    min-height: 100vh;
+    width: 100vw;
+  }
+  .snake-nokia-container {
+    padding: 1rem;
+  }
+  .snake-score-row {
+    font-size: 1rem;
+  }
+  .snake-btn {
+    font-size: 0.9rem;
+    padding: 0.4rem 1rem;
+  }
+  .snake-speed-sel {
+    font-size: 0.9rem;
+  }
+  .dir-btn {
+    font-size: 1.4em;
+    width: 34px;
+    height: 34px;
+    line-height: 32px;
+  }
+  .empty-dpad-cell {
+    width: 2rem;
+    height: 2rem;
+  }
 }
