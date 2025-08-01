@@ -172,10 +172,16 @@
   pointer-events: none;
 }
 
+ /* --cell-size: 3em;
+  --dot-size: 1.12em;
+  --line-thickness: 0.48em;
+  --box-size: 3em;
+  --app-padding: 2.5rem;
+  --modal-padding: 2.1em 2.5em; */
 /* Boxes */
 .dnb-box {
-  width: var(--box-size);
-  height: var(--box-size);
+  width: 2em;
+  height: 2.5em;
   box-shadow: 0 1.5px 4px #79a9d620;
   border-radius: 6px;
   background: #fffdea;
@@ -201,8 +207,8 @@
 }
 
 .dnb-legend .dnb-dot {
-  width: 0.85em;
-  height: 0.85em;
+  width: 0.8em;
+  height: 0.8em;
   border-width: 0.17em;
   margin: 0;
 }

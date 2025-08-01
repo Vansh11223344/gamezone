@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-// Board configuration (logic stays as in your version)
+// Board configuration
 const BOARD_SIZE = 10;
 const WIN_CELL = 100;
 const LADDERS = [
@@ -12,7 +12,7 @@ const SNAKES = [
 ];
 
 const LADDER_STARTS = LADDERS.map(l => l[0]);
-const SNAKE_HEADS  = SNAKES.map(s => s[0]);
+const SNAKE_HEADS = SNAKES.map(s => s[0]);
 
 function rollDie() {
   return Math.floor(Math.random() * 6) + 1;
@@ -26,7 +26,7 @@ function playerNames(idx, mode) {
 export default function SnakeLadder() {
   const [mode, setMode] = useState(null);
   const [player, setPlayer] = useState(0);
-  const [pos, setPos] = useState([1,1]);
+  const [pos, setPos] = useState([1, 1]);
   const [dice, setDice] = useState(null);
   const [rolling, setRolling] = useState(false);
   const [winner, setWinner] = useState(null);
@@ -35,16 +35,18 @@ export default function SnakeLadder() {
 
   // CPU auto-roll
   useEffect(() => {
-    if (winner || mode !== "cpu" || player !== 1 || rolling || isAnimating) return;
-    const timer = setTimeout(() => handleDice(), 800);
-    return () => clearTimeout(timer);
-    // eslint-disable-next-line
-  }, [player, mode, winner, rolling, isAnimating]);
+    if (mode === "cpu" && player === 1 && !rolling && !isAnimating && winner === null) {
+      const timer = setTimeout(() => {
+        handleDice();
+      }, 1000); // 1-second delay for better UX
+      return () => clearTimeout(timer);
+    }
+  }, [player, mode, rolling, isAnimating, winner]);
 
   function startGame(selected) {
     setMode(selected);
     setPlayer(0);
-    setPos([1,1]);
+    setPos([1, 1]);
     setDice(null);
     setRolling(false);
     setWinner(null);
@@ -67,7 +69,7 @@ export default function SnakeLadder() {
     if (attemptedPos > WIN_CELL) {
       setMessage(`${playerNames(playerIndex, mode)} rolled ${diceValue} but would overshoot! Stay at ${currentPos}.`);
       setTimeout(() => {
-        setPlayer(p => (p+1) % (mode === '2p' ? 2 : 1));
+        setPlayer(p => (p + 1) % 2);
         setMessage('');
       }, 1400);
       return;
@@ -92,7 +94,7 @@ export default function SnakeLadder() {
       }
 
       setTimeout(() => {
-        const {newPos: finalPos, type} = checkSnakeLadder(attemptedPos);
+        const { newPos: finalPos, type } = checkSnakeLadder(attemptedPos);
         if (type === 'ladder') {
           setMessage(`${playerNames(playerIndex, mode)} climbed a ladder from ${attemptedPos} to ${finalPos}!`);
           setPos(prev => {
@@ -117,7 +119,7 @@ export default function SnakeLadder() {
           });
         }
         setTimeout(() => {
-          setPlayer(p => (p+1) % (mode === '2p' ? 2 : 1));
+          setPlayer(p => (p + 1) % 2);
           setIsAnimating(false);
           setMessage('');
         }, type !== 'none' ? 1600 : 700);
@@ -143,106 +145,89 @@ export default function SnakeLadder() {
       {!mode ? (
         <div className="snl-modal">
           <h2>🐍 Snakes &amp; Ladders 🪜</h2>
-          <button className="snl-btn snl-btn-main" onClick={()=> startGame("2p")}>Two Players</button>
-          <button className="snl-btn" onClick={()=> startGame("cpu")}>1 vs Computer</button>
+          <button className="snl-btn snl-btn-main" onClick={() => startGame("2p")}>Two Players</button>
+          <button className="snl-btn" onClick={() => startGame("cpu")}>1 vs Computer</button>
         </div>
-      ) : <>
-        <div className="snl-header">
-          <div className={`snl-turn snl-p${player}` + (winner!==null ? " snl-highlight":"")}>
-            {winner !== null
-              ? <>🏆 <b>{playerNames(winner,mode)}</b> Wins!</>
-              : <>Turn: <b>{playerNames(player,mode)}</b></>}
+      ) : (
+        <>
+          <div className="snl-header">
+            <div className={`snl-turn snl-p${player}` + (winner !== null ? " snl-highlight" : "")}>
+              {winner !== null
+                ? <>🏆 <b>{playerNames(winner, mode)}</b> Wins!</>
+                : <>Turn: <b>{playerNames(player, mode)}</b></>}
+            </div>
+            <button className="snl-btn snl-btn-reset" onClick={() => startGame(mode)}>Reset</button>
+            <div className="snl-dice-wrap">
+              <button
+                className="snl-dice-btn"
+                disabled={rolling || winner !== null || (mode === 'cpu' && player === 1) || isAnimating}
+                onClick={handleDice}
+              >
+                <span className="snl-dice-num">{dice || '🎲'}</span>
+              </button>
+            </div>
           </div>
-          <button className="snl-btn snl-btn-reset" onClick={() => startGame(mode)}>Reset</button>
-          <div className="snl-dice-wrap">
-            <button 
-              className="snl-dice-btn"
-              disabled={
-                rolling || winner !== null || (mode==='cpu' && player===1) || isAnimating
-              }
-              onClick={handleDice}
-            >
-              <span className="snl-dice-num">
-                {dice || '🎲'}
-              </span>
-            </button>
+          <div className="snl-msgs">
+            {message ||
+              (winner !== null
+                ? `🎉 ${playerNames(winner, mode)} wins! 🎉`
+                : `${playerNames(player, mode)}'s turn — Roll the dice!`)}
           </div>
-        </div>
-        <div className="snl-msgs">
-          {message
-            || (winner!==null ? `🎉 ${playerNames(winner,mode)} wins! 🎉`
-            : `${playerNames(player,mode)}'s turn — Roll the dice!`)}
-        </div>
-        <div className="snl-board-wrap">
-          <SnlBoard
-            pos={pos}
-            player={player}
-            winner={winner}
-          />
-        </div>
-        <div className="snl-msgs" style={{marginTop: 0}}>
-          <span style={{color:"#869c03"}}>
-            {mode==='cpu'
-              ? "You are red, Computer is blue. Reach 100 to win!"
-              : "Red: Player 1, Blue: Player 2. First to 100 wins!"}
-          </span>
-        </div>
-      </>}
+          <div className="snl-board-wrap">
+            <SnlBoard pos={pos} player={player} winner={winner} />
+          </div>
+          <div className="snl-msgs" style={{ marginTop: 0 }}>
+            <span style={{ color: "#869c03" }}>
+              {mode === 'cpu'
+                ? "You are red, Computer is blue. Reach 100 to win!"
+                : "Red: Player 1, Blue: Player 2. First to 100 wins!"}
+            </span>
+          </div>
+        </>
+      )}
     </div>
   );
 }
 
-function SnlBoard({pos, player, winner}) {
-  // Render 10x10 grid, snaking left-right, right-left
+function SnlBoard({ pos, player, winner }) {
   let cells = [];
-  for(let r=0;r<10;r++) {
+  for (let r = 0; r < 10; r++) {
     let row = [];
-    for(let c=0;c<10;c++) {
-      let idx = r*10 + (r % 2 === 0 ? c : (9-c));
-      let cellNum = 100-idx;
+    for (let c = 0; c < 10; c++) {
+      let idx = r * 10 + (r % 2 === 0 ? c : 9 - c);
+      let cellNum = 100 - idx;
       let isSnake = SNAKE_HEADS.includes(cellNum);
       let isLadder = LADDER_STARTS.includes(cellNum);
-      let p0 = pos[0]===cellNum, p1 = pos[1]===cellNum;
-      let isHighlight = (p0&&player===0 || p1&&player===1) && winner===null;
+      let p0 = pos[0] === cellNum;
+      let p1 = pos[1] === cellNum;
+      let isHighlight = (p0 && player === 0 || p1 && player === 1) && winner === null;
       row.push(
         <div
           className={[
             "snl-cell",
             isSnake ? "snl-snake-start" : "",
-            isLadder? "snl-ladder-start" : "",
+            isLadder ? "snl-ladder-start" : "",
             isHighlight ? "snl-highlight" : ""
           ].join(' ')}
           key={cellNum}
         >
-          {/* Number (Bottom Right) */}
           <div className="snl-num">{cellNum}</div>
-          {/* Token(s) */}
           {p0 && <div className="snl-token snl-token1"></div>}
           {p1 && <div className="snl-token snl-token2"></div>}
-          {/* Snake/Ladder Icon */}
-          <div style={{position:'absolute',top:'0.1rem',left:'0.2rem'}}>
+          <div style={{ position: 'absolute', top: '0.1rem', left: '0.2rem' }}>
             {isSnake && <span role="img" aria-label="snake">🐍</span>}
             {isLadder && <span role="img" aria-label="ladder">🪜</span>}
           </div>
-          {/* Arrow Info */}
-          <div style={{position:'absolute',top:'1.3rem',left:'0.21rem',fontSize:'0.67em',color:'#9d776c',opacity:0.78}}>
-            {isSnake && <span>
-              → {SNAKES.find(([h])=>h===cellNum)?.[1]}
-            </span>}
-            {isLadder && <span>
-              → {LADDERS.find(([s])=>s===cellNum)?.[1]}
-            </span>}
+          <div style={{ position: 'absolute', top: '1.3rem', left: '0.21rem', fontSize: '0.67em', color: '#9d776c', opacity: 0.78 }}>
+            {isSnake && <span>→ {SNAKES.find(([h]) => h === cellNum)?.[1]}</span>}
+            {isLadder && <span>→ {LADDERS.find(([s]) => s === cellNum)?.[1]}</span>}
           </div>
         </div>
       );
     }
     cells = cells.concat(row);
   }
-  return (
-    <div className="snl-board">
-      {cells}
-    </div>
-  );
+  return <div className="snl-board">{cells}</div>;
 }
 
 // CSS string for <style>{snlCSS}</style>
@@ -456,5 +441,3 @@ const snlCSS = `
   .snl-msgs { font-size: 0.8rem; padding: 0.6rem; }
 }
 `;
-// end snlCSS
-

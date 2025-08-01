@@ -39,20 +39,22 @@ const SLED_START = { x: 48, y: 72, vx: 0, vy: 0, theta: 0, riding: false, crashe
 
 export default function LineRider() {
   const canvasRef = useRef();
-  const [lines, setLines] = useState([]); // Array of { type, points: [pt1, pt2] or [p0, p1, p2, p3] }
-  const [drawing, setDrawing] = useState(null); // { type, x0, y0, x1, y1 } or { type, points: [p0, p1, p2, p3] }
-  const [mode, setMode] = useState("draw"); // "draw", "erase", "curve"
-  const [terrainType, setTerrainType] = useState("normal"); // "normal", "ice", "sticky"
+  const [lines, setLines] = useState([]);
+  const [drawing, setDrawing] = useState(null);
+  const [mode, setMode] = useState("draw");
+  const [terrainType, setTerrainType] = useState("normal");
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [sled, setSled] = useState({ ...SLED_START });
   const [score, setScore] = useState(0);
-  const [goal, setGoal] = useState(null); // { x, y }
+  const [goal, setGoal] = useState(null);
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const animation = useRef();
-  const [particles, setParticles] = useState([]); // Snow particles
+  const [particles, setParticles] = useState([]);
   const [crashShake, setCrashShake] = useState(0);
+  const [showControls, setShowControls] = useState(false);
+  const [touchStart, setTouchStart] = useState(null);
 
   // Handle line drawing
   function handlePointerDown(e) {
@@ -60,6 +62,11 @@ export default function LineRider() {
     const rect = canvasRef.current.getBoundingClientRect();
     const x = ((e.touches ? e.touches[0].clientX : e.clientX) - rect.left - pan.x) / zoom;
     const y = ((e.touches ? e.touches[0].clientY : e.clientY) - rect.top - pan.y) / zoom;
+    
+    if (e.touches) {
+      setTouchStart({ x: e.touches[0].clientX, y: e.touches[0].clientY });
+    }
+    
     if (mode === "draw") {
       setDrawing({ type: "line", terrain: terrainType, x0: x, y0: y, x1: x, y1: y });
     } else if (mode === "curve") {
@@ -96,6 +103,18 @@ export default function LineRider() {
     const rect = canvasRef.current.getBoundingClientRect();
     const x = ((e.touches ? e.touches[0].clientX : e.clientX) - rect.left - pan.x) / zoom;
     const y = ((e.touches ? e.touches[0].clientY : e.clientY) - rect.top - pan.y) / zoom;
+    
+    // Check if this is a pan gesture (for touch devices)
+    if (e.touches && touchStart) {
+      const dx = e.touches[0].clientX - touchStart.x;
+      const dy = e.touches[0].clientY - touchStart.y;
+      if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
+        setPan({ x: pan.x + dx, y: pan.y + dy });
+        setTouchStart({ x: e.touches[0].clientX, y: e.touches[0].clientY });
+        return;
+      }
+    }
+    
     if (mode === "draw") {
       setDrawing(d => ({ ...d, x1: x, y1: y }));
     } else if (mode === "curve") {
@@ -117,6 +136,7 @@ export default function LineRider() {
       if (!goal) setGoal({ x: drawing.points[3].x, y: drawing.points[3].y });
     }
     setDrawing(null);
+    setTouchStart(null);
   }
 
   function handleWheel(e) {
@@ -126,7 +146,7 @@ export default function LineRider() {
   }
 
   function handlePanStart(e) {
-    if (e.shiftKey || e.button === 1) {
+    if (e.shiftKey || e.button === 1 || e.touches) {
       const rect = canvasRef.current.getBoundingClientRect();
       setDrawing({ type: "pan", x0: e.clientX - rect.left, y0: e.clientY - rect.top });
     }
@@ -162,6 +182,8 @@ export default function LineRider() {
         setIsPaused(false);
         setGoal(null);
         setScore(0);
+      } else if (e.key === "h") {
+        setShowControls(s => !s);
       }
     }
     window.addEventListener("keydown", handleKeyDown);
@@ -304,8 +326,11 @@ export default function LineRider() {
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
 
-    // Background
-    ctx.fillStyle = "linear-gradient(to bottom, #87ceeb, #ffffff)";
+    // Background with gradient sky
+    const gradient = ctx.createLinearGradient(0, 0, 0, HEIGHT);
+    gradient.addColorStop(0, "#87CEEB");
+    gradient.addColorStop(0.7, "#E0F7FA");
+    ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, WIDTH, HEIGHT);
 
     // Apply zoom and pan
@@ -445,7 +470,8 @@ export default function LineRider() {
 
   return (
     <div className="linerider-container">
-      <h2 className="linerider-title">LineRider: Snowy Slopes</h2>
+      <h2 className="linerider-title">❄️ LineRider: Snowy Slopes ❄️</h2>
+      
       <div className="linerider-toolbar">
         <select
           value={terrainType}
@@ -453,67 +479,104 @@ export default function LineRider() {
           disabled={isPlaying}
           className="linerider-select"
         >
-          <option value="normal">Normal</option>
-          <option value="ice">Ice</option>
-          <option value="sticky">Sticky</option>
+          <option value="normal">🛷 Normal</option>
+          <option value="ice">🧊 Ice</option>
+          <option value="sticky">🧶 Sticky</option>
         </select>
-        <button
-          className={`linerider-btn ${mode === "draw" ? "active" : ""}`}
-          onClick={() => setMode("draw")}
-          disabled={isPlaying}
-        >
-          ✏️ Draw
-        </button>
-        <button
-          className={`linerider-btn ${mode === "curve" ? "active" : ""}`}
-          onClick={() => setMode("curve")}
-          disabled={isPlaying}
-        >
-          ➰ Curve
-        </button>
-        <button
-          className={`linerider-btn ${mode === "erase" ? "active" : ""}`}
-          onClick={() => setMode("erase")}
-          disabled={isPlaying}
-        >
-          🧹 Erase
-        </button>
-        <button
-          className="linerider-btn linerider-play"
-          onClick={() => {
-            if (!isPlaying) {
+        
+        <div className="linerider-toolbar-group">
+          <button
+            className={`linerider-btn ${mode === "draw" ? "active" : ""}`}
+            onClick={() => setMode("draw")}
+            disabled={isPlaying}
+          >
+            ✏️ Draw
+          </button>
+          <button
+            className={`linerider-btn ${mode === "curve" ? "active" : ""}`}
+            onClick={() => setMode("curve")}
+            disabled={isPlaying}
+          >
+            ➰ Curve
+          </button>
+          <button
+            className={`linerider-btn ${mode === "erase" ? "active" : ""}`}
+            onClick={() => setMode("erase")}
+            disabled={isPlaying}
+          >
+            🧹 Erase
+          </button>
+        </div>
+        
+        <div className="linerider-toolbar-group">
+          <button
+            className="linerider-btn linerider-play"
+            onClick={() => {
+              if (!isPlaying) {
+                setSled({ ...SLED_START });
+                setIsPlaying(true);
+                setIsPaused(false);
+              } else {
+                setIsPaused(p => !p);
+              }
+            }}
+            disabled={lines.length === 0}
+          >
+            {isPlaying && !isPaused ? "⏸️ Pause" : "▶️ Play"}
+          </button>
+          <button
+            className="linerider-btn"
+            onClick={() => {
+              setLines([]);
               setSled({ ...SLED_START });
-              setIsPlaying(true);
+              setIsPlaying(false);
               setIsPaused(false);
-            } else {
-              setIsPaused(p => !p);
-            }
-          }}
-          disabled={lines.length === 0}
+              setGoal(null);
+              setScore(0);
+            }}
+          >
+            🔄 Reset
+          </button>
+        </div>
+        
+        <button 
+          className="linerider-btn linerider-help"
+          onClick={() => setShowControls(!showControls)}
         >
-          {isPlaying && !isPaused ? "⏸️ Pause" : "▶️ Play"}
-        </button>
-        <button
-          className="linerider-btn"
-          onClick={() => {
-            setLines([]);
-            setSled({ ...SLED_START });
-            setIsPlaying(false);
-            setIsPaused(false);
-            setGoal(null);
-            setScore(0);
-          }}
-        >
-          🔄 Reset
-        </button>
-        <button className="linerider-btn" onClick={handleDownload} disabled={isPlaying}>
-          ⬇️ Download
+          {showControls ? "❌ Close" : "❓ Help"}
         </button>
       </div>
+      
       <div className="linerider-stats">
-        <span>Score: {score}</span>
-        <span>Zoom: {(zoom * 100).toFixed(0)}%</span>
+        <span>🏆 Score: {score}</span>
+        <span>🔍 Zoom: {(zoom * 100).toFixed(0)}%</span>
+        <span>📏 Lines: {lines.length}</span>
       </div>
+      
+      {showControls && (
+        <div className="linerider-help-panel">
+          <h3>How to Play</h3>
+          <ul>
+            <li>✏️ <b>Draw</b> lines or curves to create tracks</li>
+            <li>🧊 Choose different <b>terrain types</b> for different physics</li>
+            <li>▶️ Press <b>Play</b> to start the sled</li>
+            <li>🎯 Create a path to reach the <b>Goal</b> flag</li>
+            <li>🔄 Use <b>Reset</b> to clear everything</li>
+            <li>📱 On mobile: <b>Touch</b> to draw, <b>Drag</b> to pan</li>
+            <li>🖱️ On desktop: <b>Shift+Drag</b> to pan, <b>Scroll</b> to zoom</li>
+          </ul>
+          <h4>Keyboard Shortcuts</h4>
+          <ul>
+            <li><b>D</b> - Draw mode</li>
+            <li><b>C</b> - Curve mode</li>
+            <li><b>E</b> - Erase mode</li>
+            <li><b>P</b> - Play/Pause</li>
+            <li><b>R</b> - Reset</li>
+            <li><b>H</b> - Help</li>
+          </ul>
+        </div>
+      )}
+      
       <canvas
         ref={canvasRef}
         width={WIDTH}
@@ -534,9 +597,12 @@ export default function LineRider() {
         onTouchEnd={handlePointerUp}
         onWheel={handleWheel}
       />
+      
       <div className="linerider-footer">
-        <span>Draw lines or curves, select terrain, then press Play (P). Use D/E/C to switch modes, R to reset. Shift+drag to pan, scroll to zoom.<br />
-          <b>LineRider: Snowy Slopes</b></span>
+        <button className="linerider-btn linerider-download" onClick={handleDownload} disabled={isPlaying}>
+          ⬇️ Download Track
+        </button>
+        <p>Create tracks and watch your sledder ride them! Reach the goal for bonus points.</p>
       </div>
     </div>
   );

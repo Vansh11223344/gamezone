@@ -1,16 +1,65 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./TicTacToe.css";
 
 // Helper to check winner
 function calculateWinner(squares) {
   const lines = [
-    [0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
   ];
   for (let line of lines) {
     const [a, b, c] = line;
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) return squares[a];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c])
+      return squares[a];
   }
   return null;
+}
+
+// Minimax algorithm for optimal AI move
+function minimax(board, isMax, depth = 0) {
+  const winner = calculateWinner(board);
+  if (winner === "O") return { score: 10 - depth };
+  if (winner === "X") return { score: -10 + depth };
+  if (!board.includes(null)) return { score: 0 };
+
+  const scores = [];
+  const moves = [];
+
+  for (let i = 0; i < board.length; i++) {
+    if (board[i] === null) {
+      const newBoard = [...board];
+      newBoard[i] = isMax ? "O" : "X";
+      const result = minimax(newBoard, !isMax, depth + 1);
+      scores.push(result.score);
+      moves.push(i);
+    }
+  }
+
+  if (isMax) {
+    const maxScoreIndex = scores.indexOf(Math.max(...scores));
+    return { score: scores[maxScoreIndex], move: moves[maxScoreIndex] };
+  } else {
+    const minScoreIndex = scores.indexOf(Math.min(...scores));
+    return { score: scores[minScoreIndex], move: moves[minScoreIndex] };
+  }
+}
+
+// AI Move: pick random empty (for easy mode)
+function randomAIMove(board) {
+  const empties = board
+    .map((v, i) => (v == null ? i : null))
+    .filter((v) => v != null);
+  if (empties.length === 0) return board;
+  const choice = empties[Math.floor(Math.random() * empties.length)];
+  const newBoard = [...board];
+  newBoard[choice] = "O";
+  return newBoard;
 }
 
 const TicTacToe = () => {
@@ -19,33 +68,34 @@ const TicTacToe = () => {
   const [mode, setMode] = useState(null); // null, "human", "ai"
   const [aiTurn, setAiTurn] = useState(false);
 
-  // AI Move: pick random empty
-  function randomAIMove(board) {
-    const empties = board.map((v, i) => v == null ? i : null).filter(v => v != null);
-    if (empties.length === 0) return board;
-    const choice = empties[Math.floor(Math.random() * empties.length)];
-    const newBoard = [...board];
-    newBoard[choice] = "O";
-    return newBoard;
-  }
-
   const winner = calculateWinner(squares);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (mode === "ai" && player === "O" && !winner) {
       setTimeout(() => {
-        setSquares(b => randomAIMove(b));
+        // 10% chance for easy (random) move
+        const isEasyGame = Math.random() < 0.1;
+        let newBoard;
+        if (isEasyGame) {
+          newBoard = randomAIMove(squares);
+        } else {
+          // Use minimax for optimal move
+          const { move } = minimax(squares, true);
+          newBoard = [...squares];
+          newBoard[move] = "O";
+        }
+        setSquares(newBoard);
         setPlayer("X");
       }, 600);
     }
-  }, [player, mode, winner]);
+  }, [player, mode, winner, squares]);
 
   function handleClick(i) {
     if (squares[i] || winner || (mode === "ai" && player === "O")) return;
     const next = squares.slice();
     next[i] = player;
     setSquares(next);
-    setPlayer(p => (p === "X" ? "O" : "X"));
+    setPlayer((p) => (p === "X" ? "O" : "X"));
   }
 
   if (mode === null) {
@@ -72,15 +122,21 @@ const TicTacToe = () => {
           ))}
         </div>
         <div className="ttt-info">
-          {winner
-            ? <span className="ttt-winner">{winner} wins!</span>
-            : <span className="ttt-turn">Turn: {player}</span>
-          }
+          {winner ? (
+            <span className="ttt-winner">{winner} wins!</span>
+          ) : (
+            <span className="ttt-turn">Turn: {player}</span>
+          )}
         </div>
-        <button className="ttt-reset" onClick={() => {
-          setSquares(Array(9).fill(null));
-          setPlayer("X");
-        }}>Reset</button>
+        <button
+          className="ttt-reset"
+          onClick={() => {
+            setSquares(Array(9).fill(null));
+            setPlayer("X");
+          }}
+        >
+          Reset
+        </button>
       </div>
     </div>
   );

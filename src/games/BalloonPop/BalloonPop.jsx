@@ -43,12 +43,12 @@ function makeBalloon() {
     y: BOARD_H + randBetween(50, 100),
     r: size,
     vy: randBetween(1.5, 3.5) + Math.random() * 2,
-    vx: (Math.random() - 0.5) * 0.8, // Slight horizontal drift
+    vx: (Math.random() - 0.5) * 0.8,
     pop: false,
     popAnim: false,
     popStart: null,
     opacity: 1,
-    rotation: Math.random() * 10 - 5 // Slight rotation for realism
+    rotation: Math.random() * 10 - 5
   };
 }
 
@@ -60,17 +60,19 @@ export default function BalloonPop() {
   const [gameStarted, setGameStarted] = useState(false);
   const [spawnRate, setSpawnRate] = useState(1800);
   const [combo, setCombo] = useState(0);
+  const [maxCombo, setMaxCombo] = useState(0);
   const [lastPopTime, setLastPopTime] = useState(0);
   const [highScore, setHighScore] = useState(() => {
     return parseInt(localStorage.getItem('balloonPopHighScore') || '0');
   });
   const [particles, setParticles] = useState([]);
+  const [scorePopups, setScorePopups] = useState([]);
   const [isPaused, setIsPaused] = useState(false);
   
   const animRef = useRef();
   const spawnRef = useRef();
   const comboTimeoutRef = useRef();
-  const missedBalloonsRef = useRef(new Set()); // Track missed balloon IDs
+  const missedBalloonsRef = useRef(new Set());
 
   const startGame = useCallback(() => {
     setGameStarted(true);
@@ -79,27 +81,29 @@ export default function BalloonPop() {
     setScore(0);
     setMisses(0);
     setCombo(0);
+    setMaxCombo(0);
     setSpawnRate(1800);
     setParticles([]);
+    setScorePopups([]);
     setIsPaused(false);
-    missedBalloonsRef.current.clear(); // Reset missed IDs
+    missedBalloonsRef.current.clear();
   }, []);
 
   const pauseGame = useCallback(() => {
-    setIsPaused(!isPaused);
-  }, [isPaused]);
+    setIsPaused(prev => !prev);
+  }, []);
 
-  // Create pop particles effect
-  const createParticles = useCallback((x, y, color) => {
+  const createParticles = useCallback((x, y, color, points) => {
+    const particleCount = Math.min(20, 8 + points * 2);
     const newParticles = [];
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < particleCount; i++) {
       newParticles.push({
         id: Math.random().toString(36).slice(2),
-        x: x,
-        y: y,
+        x,
+        y,
         vx: (Math.random() - 0.5) * 8,
         vy: (Math.random() - 0.5) * 8 - 2,
-        color: color,
+        color,
         life: 1,
         decay: 0.02 + Math.random() * 0.01
       });
@@ -107,13 +111,46 @@ export default function BalloonPop() {
     setParticles(prev => [...prev, ...newParticles]);
   }, []);
 
-  // Spawn balloons
+  const createScorePopup = useCallback((x, y, points) => {
+    const id = Math.random().toString(36).slice(2);
+    setScorePopups(prev => [
+      ...prev,
+      { id, x, y, points, startTime: Date.now() }
+    ]);
+  }, []);
+
+  const popBalloon = useCallback((balloon) => {
+    if (balloon.popAnim) return;
+    
+    const now = Date.now();
+    const timeSinceLastPop = now - lastPopTime;
+    
+    let newCombo = timeSinceLastPop < 1000 ? combo + 1 : 1;
+    setCombo(newCombo);
+    setMaxCombo(prev => Math.max(prev, newCombo));
+    setLastPopTime(now);
+    
+    const basePoints = balloon.points;
+    const comboMultiplier = newCombo >= COMBO_THRESHOLD ? Math.min(newCombo, 5) : 1;
+    const finalPoints = basePoints * comboMultiplier;
+    
+    setBalloons(prev => prev.map(b =>
+      b.id === balloon.id
+        ? { ...b, pop: true, popAnim: true, popStart: now }
+        : b
+    ));
+    
+    setScore(s => s + finalPoints);
+    createParticles(balloon.x, balloon.y, balloon.color, balloon.points);
+    createScorePopup(balloon.x, balloon.y, finalPoints);
+  }, [combo, lastPopTime, createParticles, createScorePopup]);
+
   useEffect(() => {
     if (!gameStarted || gameover || isPaused) return;
     
     spawnRef.current = setInterval(() => {
       setBalloons(prev => {
-        if (prev.length < 12) { // Limit max balloons on screen
+        if (prev.length < 12) {
           return [...prev, makeBalloon()];
         }
         return prev;
@@ -123,46 +160,6 @@ export default function BalloonPop() {
     return () => clearInterval(spawnRef.current);
   }, [gameStarted, gameover, spawnRate, isPaused]);
 
-  // Pop balloon handler
-  const popBalloon = useCallback((balloon) => {
-    console.log(`Attempting to pop balloon: ${balloon.id}`); // Debug log
-    if (balloon.popAnim) return;
-    
-    const now = Date.now();
-    const timeSinceLastPop = now - lastPopTime;
-    
-    // Update combo
-    let newCombo = combo;
-    if (timeSinceLastPop < 1000) {
-      newCombo = combo + 1;
-      setCombo(newCombo);
-    } else {
-      newCombo = 1;
-      setCombo(1);
-    }
-    
-    setLastPopTime(now);
-    
-    // Calculate score with combo multiplier
-    const basePoints = balloon.points;
-    const comboMultiplier = newCombo >= COMBO_THRESHOLD ? Math.min(newCombo, 5) : 1;
-    const finalPoints = basePoints * comboMultiplier;
-    
-    setBalloons(prev => {
-      const newBalloons = prev.map(b =>
-        b.id === balloon.id
-          ? { ...b, pop: true, popAnim: true, popStart: now }
-          : b
-      );
-      console.log(`Updated balloons:`, newBalloons); // Debug log
-      return newBalloons;
-    });
-    
-    setScore(s => s + finalPoints);
-    createParticles(balloon.x, `balloon.y`, balloon.color);
-  }, [combo, lastPopTime, createParticles]);
-
-  // Main animation loop with miss detection and pop animation
   useEffect(() => {
     if (!gameStarted || gameover || isPaused) return;
     
@@ -178,50 +175,51 @@ export default function BalloonPop() {
             }
             const elapsed = now - balloon.popStart;
             if (elapsed > POP_ANIMATION_DURATION) {
-              return null; // Mark for removal
+              return null;
             }
             
             const progress = elapsed / POP_ANIMATION_DURATION;
             return { 
               ...balloon, 
-              scale: 1 + progress * 0.2, // Slightly scale up during pop
-              opacity: 1 - progress, // Fade out
+              scale: 1 + progress * 0.2,
+              opacity: 1 - progress,
               rotation: balloon.rotation + progress * 180
             };
           }
           
-          // Check for missed balloons
-          if (!balloon.popAnim && balloon.y + balloon.r < -50 && !missedBalloonsRef.current.has(balloon.id)) {
-            missedBalloonsRef.current.add(balloon.id); // Mark as missed
+          if (!balloon.popAnim && balloon.y < -balloon.r && !missedBalloonsRef.current.has(balloon.id)) {
+            missedBalloonsRef.current.add(balloon.id);
             missedCount++;
-            return null; // Mark for removal
+            return null;
           }
           
-          // Normal movement
           return { 
             ...balloon, 
             y: balloon.y - balloon.vy,
             x: balloon.x + balloon.vx,
             rotation: balloon.rotation + 0.1
           };
-        }).filter(balloon => balloon !== null); // Remove null balloons
+        }).filter(balloon => balloon !== null);
         
         if (missedCount > 0) {
           setMisses(m => Math.min(m + missedCount, MAX_MISSES));
-          setCombo(0); // Reset combo on miss
+          setCombo(0);
         }
         
         return newBalloons;
       });
 
-      // Update particles
       setParticles(prev => prev.map(particle => ({
         ...particle,
         x: particle.x + particle.vx,
         y: particle.y + particle.vy,
-        vy: particle.vy + 0.2, // Gravity
+        vy: particle.vy + 0.2,
         life: particle.life - particle.decay
       })).filter(particle => particle.life > 0));
+
+      setScorePopups(prev => prev.filter(popup => 
+        now - popup.startTime < 1500
+      ));
       
       animRef.current = requestAnimationFrame(frame);
     }
@@ -230,7 +228,6 @@ export default function BalloonPop() {
     return () => cancelAnimationFrame(animRef.current);
   }, [gameStarted, gameover, isPaused]);
 
-  // Game over and difficulty progression
   useEffect(() => {
     if (misses >= MAX_MISSES && !gameover) {
       setGameover(true);
@@ -240,14 +237,12 @@ export default function BalloonPop() {
       }
     }
     
-    // Increase difficulty based on score
     const newSpawnRate = Math.max(800, 1800 - Math.floor(score / 10) * 100);
     if (newSpawnRate !== spawnRate) {
       setSpawnRate(newSpawnRate);
     }
   }, [misses, score, gameover, highScore, spawnRate]);
 
-  // Combo timeout
   useEffect(() => {
     if (combo > 0) {
       clearTimeout(comboTimeoutRef.current);
@@ -314,7 +309,6 @@ export default function BalloonPop() {
       )}
 
       <div className="bp-board" style={{ width: BOARD_W, height: BOARD_H }}>
-        {/* Balloons */}
         {balloons.map(balloon => (
           <div
             key={balloon.id}
@@ -328,7 +322,7 @@ export default function BalloonPop() {
               transform: `rotate(${balloon.rotation}deg) ${balloon.scale ? `scale(${balloon.scale})` : ''}`,
               opacity: balloon.opacity || 1,
               zIndex: balloon.popAnim ? 1000 : Math.floor(balloon.y),
-              pointerEvents: balloon.popAnim ? 'none' : 'auto' // Disable clicks during pop
+              pointerEvents: balloon.popAnim ? 'none' : 'auto'
             }}
             onClick={() => popBalloon(balloon)}
           >
@@ -340,7 +334,6 @@ export default function BalloonPop() {
           </div>
         ))}
 
-        {/* Particles */}
         {particles.map(particle => (
           <div
             key={particle.id}
@@ -355,7 +348,20 @@ export default function BalloonPop() {
           />
         ))}
 
-        {/* Pause overlay */}
+        {scorePopups.map(popup => (
+          <div
+            key={popup.id}
+            className="bp-score-popup"
+            style={{
+              left: popup.x,
+              top: popup.y,
+              fontSize: `${1 + popup.points / 10}rem`
+            }}
+          >
+            +{popup.points}
+          </div>
+        ))}
+
         {isPaused && (
           <div className="bp-pause-overlay">
             <div className="bp-pause-content">
@@ -365,7 +371,6 @@ export default function BalloonPop() {
           </div>
         )}
 
-        {/* Game over screen */}
         {gameover && (
           <div className="bp-game-over">
             <div className="bp-game-over-content">
@@ -373,7 +378,7 @@ export default function BalloonPop() {
               <div className="bp-final-stats">
                 <p>Final Score: <strong>{score}</strong></p>
                 {score > highScore && <p className="bp-new-record">🎉 New High Score!</p>}
-                <p>Best Combo: <strong>x{combo}</strong></p>
+                <p>Best Combo: <strong>x{maxCombo}</strong></p>
               </div>
               <button className="bp-btn bp-btn-large" onClick={startGame}>
                 Play Again

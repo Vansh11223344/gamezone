@@ -141,7 +141,7 @@ export default function SprinterDice() {
       )}
 
       <footer className="sprinterdice-footer">
-        Classic SprinterDice | Responsive Boardgame Experience
+        Classic SprinterDice | Enjoy the Game
       </footer>
     </div>
   );

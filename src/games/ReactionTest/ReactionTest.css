@@ -1,187 +1,311 @@
 .reaction-container {
-  max-width: 380px;
-  margin: 34px auto 40px auto;
-  padding: 23px 8px 20px 8px;
-  background: linear-gradient(135deg,#e4eaff 85%,#cfeddd 100%);
-  border-radius: 16px;
-  box-shadow: 0 8px 34px #b9dbff51, 0 2px 6px #7be7b033;
-  font-family: 'Orbitron','Fira Mono','Segoe UI',Arial,sans-serif;
-  color: #23466a;
+  max-width: clamp(280px, 90vw, 400px);
+  margin: clamp(10px, 3vw, 20px) auto;
+  padding: clamp(10px, 3vw, 20px) clamp(5px, 2vw, 10px);
+  background: linear-gradient(135deg, #1e2a44 0%, #2a4066 100%);
+  border-radius: 20px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3), 0 2px 12px rgba(0, 0, 0, 0.2);
+  font-family: 'Orbitron', 'Fira Mono', 'Segoe UI', Arial, sans-serif;
+  color: #e0e7ff;
   user-select: none;
   text-align: center;
+  box-sizing: border-box;
+}
+
+.reaction-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: clamp(10px, 3vw, 15px);
 }
 
 .reaction-title {
-  font-size: 2.0rem;
+  font-size: clamp(1.5rem, 5vw, 2rem);
   font-weight: bold;
   color: #26bbaa;
-  letter-spacing: 9px;
-  margin-bottom: 19px;
-  text-shadow: 0 5px 14px #49fdf399, 0 1px 1px #233;
-  background: linear-gradient(90deg,#2ffeca 30%,#237cff 120%);
+  letter-spacing: clamp(4px, 2vw, 8px);
+  text-shadow: 0 3px 12px rgba(73, 253, 243, 0.6);
+  background: linear-gradient(90deg, #2ffeca 30%, #237cff 120%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
+.reaction-controls {
+  display: flex;
+  gap: clamp(5px, 1.5vw, 10px);
+}
+
+.reaction-btn {
+  background: linear-gradient(90deg, #2ffeca 30%, #237cff 120%);
+  color: #1e2a44;
+  font-weight: bold;
+  font-size: clamp(0.8rem, 2.5vw, 1rem);
+  border: none;
+  border-radius: 10px;
+  padding: clamp(5px, 1.5vw, 8px) clamp(8px, 2vw, 12px);
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(73, 253, 243, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.reaction-btn:hover,
+.reaction-btn:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(73, 253, 243, 0.6);
+  outline: none;
+}
+
 .reaction-area {
-  margin: 0 auto 18px auto;
-  border-radius: 17px;
-  box-shadow: 0 8px 18px #4ac0ff33;
+  margin: 0 auto clamp(10px, 3vw, 15px) auto;
+  border-radius: 15px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
   width: 100%;
-  min-width: 175px;
-  max-width: 100vw;
-  height: 168px;
+  min-width: clamp(200px, 80vw, 300px);
+  height: clamp(120px, 40vw, 160px);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: 1.25rem;
-  font-family: inherit;
+  font-size: clamp(1rem, 3vw, 1.2rem);
   font-weight: 700;
-  transition: background 0.16s, border 0.14s;
-  border: 4.5px solid #3adeff;
+  transition: background 0.2s, border 0.2s, transform 0.2s;
+  border: clamp(2px, 0.8vw, 4px) solid #3adeff;
   cursor: pointer;
-  user-select: none;
   outline: none;
-  margin-left: -3px;
+}
+
+.reaction-area:hover {
+  transform: scale(1.02);
 }
 
 .reaction-area.wait {
-  background: linear-gradient(120deg,#f5ffaa 45%,#e4ffdf 100%);
-  color: #1c4c24;
+  background: linear-gradient(120deg, #4facfe 0%, #00f2fe 100%);
+  color: #1e2a44;
   border-color: #cdff5f;
 }
+
 .reaction-area.ready {
-  background: linear-gradient(135deg,#fff6c9 80%,#fffdf3 100%);
+  background: linear-gradient(135deg, #ffda6e 0%, #fff3b0 100%);
   color: #8c8a55;
   border-color: #faf96e;
-  opacity: .74;
+  opacity: 0.9;
 }
+
 .reaction-area.go {
-  background: linear-gradient(90deg,#16ff69 40%,#87ffd0 100%);
+  background: linear-gradient(90deg, #16ff69 0%, #87ffd0 100%);
   color: #006738;
   border-color: #31ff97;
-  animation: r-flash .3s 2;
+  animation: r-flash 0.3s 2;
 }
-@keyframes r-flash { 0%{border-color:#fff;} 100%{border-color:#31ff97;}}
+
+@keyframes r-flash {
+  0% {
+    border-color: #fff;
+  }
+  100% {
+    border-color: #31ff97;
+  }
+}
+
 .reaction-area.result {
-  background: linear-gradient(90deg,#88fffc 44%,#89d3ff 100%);
+  background: linear-gradient(90deg, #88fffc 0%, #89d3ff 100%);
   color: #165b96;
   border-color: #86fcfd;
 }
+
 .reaction-area.tooso {
-  background: linear-gradient(135deg,#ffa5a5 70%,#fff1ce 100%);
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff9e9e 100%);
   color: #c71010;
   border-color: #fa6969;
 }
 
 .reaction-hint {
-  font-size: 1.12rem;
-  color: #17679b;
-  margin-bottom: 14px;
+  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+  color: #1e2a44;
+  margin-bottom: clamp(8px, 2vw, 12px);
   font-weight: 600;
 }
+
 .reaction-bigbtn {
-  background: linear-gradient(85deg,#2fffab 45%,#16fa73 99%);
-  color: #23466a;
+  background: linear-gradient(90deg, #2ffeca 30%, #237cff 120%);
+  color: #1e2a44;
   font-weight: 900;
-  font-size: 1.25rem;
+  font-size: clamp(1rem, 3vw, 1.2rem);
   border-radius: 12px;
-  padding: 16px 28px;
-  box-shadow: 0 2.2px 22px #affaea44;
-  margin-bottom: 3px;
+  padding: clamp(10px, 3vw, 15px) clamp(20px, 5vw, 25px);
+  box-shadow: 0 3px 15px rgba(73, 253, 243, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
-.reaction-wait-icon {
-  font-size: 2.7rem;
-  color: #ffc831;
-  animation: r-waitwave .7s infinite ease-in;
+
+.reaction-bigbtn:hover,
+.reaction-bigbtn:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(73, 253, 243, 0.6);
 }
-@keyframes r-waitwave {
-  0%,100%{ opacity:.6; transform:translateY(0);}
-  45%{ opacity:1;transform:translateY(-5px);}
+
+.reaction-progress {
+  width: 80%;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: clamp(8px, 2vw, 12px);
 }
+
+.reaction-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #ffda6e, #faf96e);
+  transition: width 0.1s linear;
+}
+
 .reaction-waitmsg {
-  font-size: 1.22rem;
-  color: #bfb269;
-  margin-top: 3px;
+  font-size: clamp(1rem, 3vw, 1.2rem);
+  color: #8c8a55;
+  margin-top: clamp(3px, 1vw, 5px);
 }
+
 .reaction-gobtn {
-  font-size: 2.22rem;
-  color: #05962e;
-  text-shadow: 0 1.2px 8px #86ffcccc;
-  letter-spacing: 6px;
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  color: #006738;
+  text-shadow: 0 1.2px 8px rgba(134, 255, 204, 0.8);
+  letter-spacing: clamp(3px, 1vw, 5px);
+  animation: pulse 0.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .reaction-alert {
-  font-size: 1.15rem;
+  font-size: clamp(1rem, 3vw, 1.2rem);
   font-weight: 900;
-  margin: 0 auto 3px auto;
+  margin: 0 auto clamp(3px, 1vw, 5px) auto;
 }
+
 .reaction-retry {
   color: #28c6f2;
-  font-size: 1.04rem;
-  margin-top: 5px;
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  margin-top: clamp(3px, 1vw, 5px);
   font-weight: 700;
-  letter-spacing: .7px;
+  letter-spacing: 0.7px;
   display: block;
 }
 
 .reaction-result {
-  font-size: 1.22rem;
+  font-size: clamp(1rem, 3vw, 1.2rem);
   font-weight: bold;
   color: #115a86;
 }
+
 .reaction-result span {
-  margin-right: 7px;
+  margin-right: clamp(5px, 1.5vw, 7px);
 }
 
 .reaction-ms {
   color: #05a90c;
-  font-size: 2.3em;
+  font-size: clamp(1.5rem, 5vw, 2.2rem);
   background: #e1ffdc;
   border-radius: 12px;
-  padding: 4px 15px;
-  margin-top: 6px;
+  padding: clamp(3px, 1vw, 5px) clamp(10px, 3vw, 15px);
+  margin: clamp(5px, 1.5vw, 8px) 0;
   display: inline-block;
-  margin-bottom: 7px;
-  box-shadow: 0 2px 10px #cfffc6aa;
+  box-shadow: 0 2px 10px rgba(207, 255, 198, 0.7);
 }
 
 .reaction-small {
   color: #70707c;
-  font-size: .94rem;
-  margin-top: 12px;
+  font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+  margin-top: clamp(8px, 2vw, 12px);
 }
 
 .reaction-results {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 1.12rem;
-  color: #4891a7;
+  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+  color: #e0e7ff;
   font-weight: 700;
-  margin: 13px 0 5px 0;
-  background: #e1faff;
-  border-radius: 8px;
-  padding: 7px 15px;
-  gap: 24px;
-}
-.reaction-results span {
-  min-width: 85px;
-}
-.reaction-footer {
-  margin-top: 15px;
-  color: #59bcd6;
-  font-size: 1.05rem;
-  opacity: .88;
-  letter-spacing: 1.2px;
+  margin: clamp(10px, 3vw, 15px) 0 clamp(5px, 1.5vw, 8px);
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: clamp(5px, 1.5vw, 8px) clamp(10px, 3vw, 15px);
+  gap: clamp(10px, 3vw, 20px);
+  backdrop-filter: blur(5px);
 }
 
-/* Responsive */
-@media (max-width:450px){
-  .reaction-title{ font-size: 1.1rem;}
-  .reaction-results { font-size:.95rem; gap: 11px; }
-  .reaction-container { padding:9px 1vw 8vw 1vw;}
-  .reaction-area { min-width: 92vw; height: 120px;}
+.reaction-results span {
+  min-width: clamp(60px, 20vw, 80px);
+}
+
+.reaction-footer {
+  margin-top: clamp(10px, 3vw, 15px);
+  color: #a3bffa;
+  font-size: clamp(0.8rem, 2.5vw, 1rem);
+  opacity: 0.9;
+  letter-spacing: clamp(0.8px, 0.3vw, 1.2px);
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .reaction-container {
+    margin: clamp(5px, 2vw, 10px) auto;
+    padding: clamp(8px, 2vw, 15px) clamp(3px, 1vw, 8px);
+  }
+
+  .reaction-title {
+    font-size: clamp(1.2rem, 4vw, 1.5rem);
+    letter-spacing: clamp(3px, 1vw, 5px);
+  }
+
+  .reaction-header {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .reaction-area {
+    min-width: clamp(180px, 90vw, 280px);
+    height: clamp(100px, 35vw, 140px);
+  }
+
+  .reaction-bigbtn {
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+    padding: clamp(8px, 2vw, 12px) clamp(15px, 4vw, 20px);
+  }
+
+  .reaction-results {
+    font-size: clamp(0.8rem, 2vw, 1rem);
+    gap: clamp(5px, 2vw, 10px);
+  }
+
+  .reaction-footer {
+    font-size: clamp(0.7rem, 2vw, 0.9rem);
+  }
+}
+
+@media (max-width: 360px) {
+  .reaction-container {
+    max-width: clamp(260px, 95vw, 320px);
+  }
+
+  .reaction-area {
+    min-width: clamp(160px, 92vw, 260px);
+    height: clamp(90px, 30vw, 120px);
+  }
+
+  .reaction-bigbtn {
+    font-size: clamp(0.8rem, 2vw, 1rem);
+  }
+
+  .reaction-ms {
+    font-size: clamp(1.2rem, 4vw, 1.8rem);
+  }
 }

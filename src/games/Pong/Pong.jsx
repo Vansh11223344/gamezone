@@ -31,13 +31,10 @@ function Pong() {
     gameStarted: false,
   });
 
-  const [dimensions, setDimensions] = useState({
-    width: BASE_W,
-    height: BASE_H,
-    scale: 1,
-  });
+  // Detect if device is mobile
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Handle responsive canvas sizing
+  // Handle responsive canvas sizing and mobile detection
   useEffect(() => {
     const handleResize = () => {
       const container = canvasRef.current?.parentElement;
@@ -54,12 +51,19 @@ function Pong() {
       const height = BASE_H * scale;
 
       setDimensions({ width, height, scale });
+      setIsMobile(window.innerWidth <= 768); // Consider ≤768px as mobile
     };
 
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  const [dimensions, setDimensions] = useState({
+    width: BASE_W,
+    height: BASE_H,
+    scale: 1,
+  });
 
   // Reset ball to center with random direction
   const resetBall = useCallback(() => {
@@ -117,7 +121,7 @@ function Pong() {
           );
         }
 
-        // AI paddle movement (simple tracking with some lag)
+        // AI paddle movement
         const aiCenter = newState.aiY + PADDLE_H / 2;
         const ballCenter = newState.ballY;
         const diff = ballCenter - aiCenter;
@@ -262,21 +266,21 @@ function Pong() {
       const winner =
         gameState.playerScore >= 10 ? "YOU WIN!" : "YOU LOSE!";
       ctx.fillText(winner, BASE_W / 2, BASE_H / 2);
-      ctx.font = "24px Arial";
-      ctx.fillText("Press SPACE to restart", BASE_W / 2, BASE_H / 2 + 50);
+      if (!isMobile) {
+        ctx.font = "24px Arial";
+        ctx.fillText("Press SPACE to restart", BASE_W / 2, BASE_H / 2 + 50);
+      }
     }
-  }, [gameState]);
+  }, [gameState, isMobile]);
 
   // Handle keyboard input
   useEffect(() => {
     const handleKeyDown = (e) => {
       keysRef.current[e.code] = true;
 
-      if (e.code === "Space") {
+      if (e.code === "Space" && !gameState.gameRunning) {
         e.preventDefault();
-        if (!gameState.gameRunning) {
-          startGame();
-        }
+        startGame();
       }
     };
 
@@ -320,7 +324,6 @@ function Pong() {
           height={BASE_H}
           className="pong-canvas"
         />
-        {/* Touch controls for mobile */}
         <div className="pong-touch-controls">
           <button
             onTouchStart={() => handleTouchStart("up")}
@@ -347,21 +350,20 @@ function Pong() {
       <div className="pong-instructions">
         {!gameState.gameStarted ? (
           <div>
-            <p>Press SPACE to start the game!</p>
-            <p>Use Arrow Keys or W/S to move your paddle</p>
+            <p>Press SPACE or tap START to begin!</p>
+            <p>Use Arrow Keys, W/S, or touch buttons to move your paddle</p>
             <p>First to 10 points wins!</p>
           </div>
         ) : (
           <div>
-            <p>Use Arrow Keys or W/S to move</p>
-            <p>Touch controls available on mobile</p>
+            <p>Use Arrow Keys, W/S, or touch buttons to move</p>
             <p>AI: {gameState.aiScore} - {gameState.playerScore} :You</p>
           </div>
         )}
       </div>
-      {!gameState.gameRunning && !gameState.gameStarted && (
+      {!gameState.gameRunning && (
         <button onClick={startGame} className="pong-start-btn">
-          START GAME
+          {gameState.gameStarted ? "RESTART GAME" : "START GAME"}
         </button>
       )}
     </div>

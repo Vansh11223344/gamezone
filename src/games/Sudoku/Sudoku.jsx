@@ -248,8 +248,8 @@ function Sudoku() {
           <Box
             className="sudoku-board"
             style={{
-              gridTemplateColumns: `repeat(${sizeObj.size}, 40px)`,
-              gridTemplateRows: `repeat(${sizeObj.size}, 40px)`,
+              gridTemplateColumns: `repeat(${sizeObj.size}, minmax(30px, 10vw))`,
+              gridTemplateRows: `repeat(${sizeObj.size}, minmax(30px, 10vw))`,
             }}
             ref={boardRef}
             tabIndex={0}
@@ -305,7 +305,7 @@ function Sudoku() {
               startIcon={<Delete />}
               sx={{ minWidth: '80px', m: 0.5 }}
             >
-              Erase
+              
             </Button>
           </Box>
           <Typography variant="body2" color="textSecondary" className="sudoku-footer gamecard-footer" sx={{ mt: 2 }}>

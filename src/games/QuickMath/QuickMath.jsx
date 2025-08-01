@@ -8,17 +8,33 @@ function randomMath() {
     { sign: "×", fn: (a, b) => a * b },
     { sign: "÷", fn: (a, b) => Math.floor(a / b), safe: (a, b) => b > 0 && a % b === 0 }
   ];
-  let op = ops[Math.floor(Math.random() * ops.length)];
+  // Ensure balanced operation selection by cycling through operations
+  const lastOp = localStorage.getItem("lastOp") || -1;
+  let opIndex = (parseInt(lastOp) + 1) % ops.length;
+  let op = ops[opIndex];
   let a, b, ans;
-  while (true) {
-    a = Math.floor(Math.random() * 21) + 4; // 4-24
-    b = Math.floor(Math.random() * 14) + 2; // 2-15
-    if (op.sign === "-" && a < b) [a, b] = [b, a];
-    if (op.sign === "÷" && (!op.safe || !op.safe(a, b))) continue;
+  let attempts = 0;
+  const maxAttempts = 10; // Prevent infinite loops
+  while (attempts < maxAttempts) {
+    a = Math.floor(Math.random() * 31) + 2; // 2-32
+    b = Math.floor(Math.random() * 16) + 1; // 1-16
+    if (op.sign === "-" && a <= b) [a, b] = [b + Math.floor(Math.random() * 10), a]; // Ensure positive result
+    if (op.sign === "÷" && (!op.safe || !op.safe(a, b))) {
+      // For division, ensure a is a multiple of b and result is reasonable
+      b = Math.floor(Math.random() * 10) + 1; // 1-10
+      a = b * (Math.floor(Math.random() * 10) + 1); // Ensure divisibility, result 1-10
+    }
     ans = op.fn(a, b);
-    if (op.sign === "÷" && ans > 20) continue;
-    break;
+    // Ensure answer is within reasonable bounds and not trivial
+    if (ans >= -100 && ans <= 100 && !(op.sign === "+" && ans < 5) && !(op.sign === "×" && ans < 4)) {
+      break;
+    }
+    attempts++;
+    // If constraints aren't met, try next operation
+    opIndex = (opIndex + 1) % ops.length;
+    op = ops[opIndex];
   }
+  localStorage.setItem("lastOp", opIndex);
   return { left: a, right: b, op: op.sign, ans };
 }
 
@@ -38,9 +54,7 @@ export default function QuickMath() {
   useEffect(() => {
     if (gameover) return;
     timerRef.current = setInterval(() => {
-      setTimer(t =>
-        t > 0 ? t - 1 : 0
-      );
+      setTimer(t => (t > 0 ? t - 1 : 0));
     }, 1000);
     return () => clearInterval(timerRef.current);
   }, [question, gameover]);
@@ -109,6 +123,7 @@ export default function QuickMath() {
       if (e.key === "Enter") handleSubmit();
       if (e.key === "Backspace") setInput(v => v.slice(0, -1));
       if (e.key >= "0" && e.key <= "9") handleDigit(e.key);
+      if (e.key === "-" && input === "") setInput("-"); // Allow negative sign for subtraction
       if (e.key === "c" || e.key === "C" || e.key === "Escape") handleClear();
     };
     window.addEventListener("keydown", kdown);
@@ -138,11 +153,14 @@ export default function QuickMath() {
         <span
           className={
             "qm-timer " +
-            (timer < 5 ? "danger" :
-             timer < 10 ? "warn" : "")
+            (timer < 5 ? "danger" : timer < 10 ? "warn" : "")
           }
-        >{timer}s</span>
-        <button className="qm-btn" onClick={handleRestart}>Restart</button>
+        >
+          {timer}s
+        </span>
+        <button className="qm-btn" onClick={handleRestart}>
+          Restart
+        </button>
       </div>
       <div className="qm-quizbox">
         <div className="qm-equation">
@@ -150,24 +168,34 @@ export default function QuickMath() {
           <span className="qm-op">{question.op}</span>
           <span className="qm-num">{question.right}</span>
           <span className="qm-eq">=</span>
-          <span className={"qm-input" +
-            (feedback === "correct" ? " correct" : feedback === "wrong" ? " wrong" : "")}
+          <span
+            className={
+              "qm-input" +
+              (feedback === "correct" ? " correct" : feedback === "wrong" ? " wrong" : "")
+            }
           >
             {input || "?"}
           </span>
         </div>
-        {gameover
-          ? <div className="qm-gameover">Game over!<br /><b>Your score: {score}</b><br />
-              <button className="qm-btn" onClick={handleRestart}>Play Again</button>
-            </div>
-          : feedback &&
-            <div className={
-              "qm-feedback " +
-              (feedback === "correct" ? "yes" : "no")
-            }>
+        {gameover ? (
+          <div className="qm-gameover">
+            Game over!
+            <br />
+            <b>Your score: {score}</b>
+            <br />
+            <button className="qm-btn" onClick={handleRestart}>
+              Play Again
+            </button>
+          </div>
+        ) : (
+          feedback && (
+            <div
+              className={"qm-feedback " + (feedback === "correct" ? "yes" : "no")}
+            >
               {feedback === "correct" ? "✔ Correct!" : "✗ Wrong!"}
             </div>
-        }
+          )
+        )}
       </div>
       <div className="qm-numpad">
         {btnVals.map((row, i) => (
@@ -182,14 +210,17 @@ export default function QuickMath() {
                 disabled={gameover && v !== "C" && v !== "OK"}
                 onClick={() => btnAction(v)}
                 tabIndex={0}
-              >{v}</button>
+              >
+                {v}
+              </button>
             ))}
           </div>
         ))}
       </div>
       <div className="qm-footer">
         <b>How to play:</b> Solve as many as you can before the time runs out!
-        <br />Type, tap, or use arrow keys. Fast math, quick mind!
+        <br />
+        Type, tap, or use arrow keys. Fast math, quick mind!
       </div>
     </div>
   );

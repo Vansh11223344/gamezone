@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import "./Snake.css";
 
 // --- CONSTANTS ---
 const BOARD_COLS = 20;
@@ -49,7 +50,7 @@ const SPEEDS = [
 ];
 
 // --- MAIN COMPONENT ---
-const Snake = () => {
+const SnakeGame = () => {
   const [snake, setSnake] = useState([...INITIAL_SNAKE]);
   const [dir, setDir] = useState("ArrowRight");
   const [nextDir, setNextDir] = useState("ArrowRight");
@@ -64,9 +65,9 @@ const Snake = () => {
   // Responsive grid size
   useEffect(() => {
     const handleResize = () => {
-      let min = Math.min(window.innerWidth - 32, 430);
-      let grid = BOARD_COLS * SQUARE_SIZE;
-      setContainerWidth(Math.min(min, grid));
+      const minSize = Math.min(window.innerWidth - 32, window.innerHeight - 200);
+      const maxGameSize = Math.min(minSize, 460);
+      setContainerWidth(Math.max(300, maxGameSize));
     };
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -98,7 +99,9 @@ const Snake = () => {
       if (!hasEaten) {
         newSnake.pop();
       } else {
-        setFood(getRandomCell(newSnake));
+        // food never appears on the snake
+        let nextFood = getRandomCell(newSnake);
+        setFood(nextFood);
         setScore((s) => s + 1);
       }
       return newSnake;
@@ -158,154 +161,188 @@ const Snake = () => {
   const canChangeSpeed = (!playing && !gamePaused) || gameOver;
 
   return (
-    <div className="snake-game-container">
-      <div className="snake-game-background">
-        <div className="snake-game-pattern"></div>
-        <div className="snake-nokia-container">
-          <div className="snake-score-row">
-            <span className="snake-score-label">Score:</span>
-            <span className="snake-score-val">{score}</span>
-            <span className="snake-speed">
-              Speed:&nbsp;
-              <select
-                value={speedIdx}
-                onChange={e => canChangeSpeed && setSpeedIdx(+e.target.value)}
-                className="snake-speed-sel"
-                disabled={!canChangeSpeed}
-                aria-label="Select speed"
-              >
-                {SPEEDS.map((s, i) => (
-                  <option key={s.value} value={i}>{s.label}</option>
-                ))}
-              </select>
-            </span>
-          </div>
-          <div
-            className="snake-board-outer"
-            style={{
-              width: containerWidth,
-              height: containerWidth,
-            }}
-          >
+    <div className="snake-theme">
+      <div className="snake-game-container">
+        <div className="snake-game-background">
+          <div className="snake-game-pattern"></div>
+          <div className="snake-nokia-container">
+            <div className="snake-game-header">
+              <h1 className="snake-game-title">🐍 Snake Game</h1>
+            </div>
+
+            <div className="snake-score-row">
+              <div className="snake-score-section">
+                <span className="snake-score-label">Score</span>
+                <span className="snake-score-val">{score}</span>
+              </div>
+              <div className="snake-speed-section">
+                <span className="snake-speed-label">Speed</span>
+                <select
+                  value={speedIdx}
+                  onChange={e => canChangeSpeed && setSpeedIdx(+e.target.value)}
+                  className="snake-speed-sel"
+                  disabled={!canChangeSpeed}
+                  aria-label="Select speed"
+                >
+                  {SPEEDS.map((s, i) => (
+                    <option key={s.value} value={i}>{s.label}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
             <div
-              className="snake-board-inner"
+              className="snake-board-outer"
               style={{
-                width: BOARD_COLS * SQUARE_SIZE,
-                height: BOARD_ROWS * SQUARE_SIZE,
-                transform: `scale(${scale})`,
-                transformOrigin: 'top left',
-                position: 'relative',
+                width: containerWidth,
+                height: containerWidth,
               }}
-              tabIndex={0}
             >
-              {/* Snake */}
-              {snake.map((seg, i) => (
+              <div
+                className="snake-board-inner"
+                style={{
+                  width: BOARD_COLS * SQUARE_SIZE,
+                  height: BOARD_ROWS * SQUARE_SIZE,
+                  transform: `scale(${scale})`,
+                  transformOrigin: 'top left',
+                  position: 'relative',
+                }}
+                tabIndex={0}
+              >
+                {/* Snake */}
+                {snake.map((seg, i) => (
+                  <div
+                    key={i}
+                    className={`snake-segment${i === 0 ? " snake-head" : ""}`}
+                    style={{
+                      left: seg.x * SQUARE_SIZE + SEGMENT_MARGIN,
+                      top: seg.y * SQUARE_SIZE + SEGMENT_MARGIN,
+                      width: SEGMENT_SIZE,
+                      height: SEGMENT_SIZE,
+                    }}
+                  />
+                ))}
+
+                {/* Food */}
                 <div
-                  key={i}
-                  className={`snake-segment${i === 0 ? " snake-head" : ""}`}
+                  className="snake-food"
                   style={{
-                    left: seg.x * SQUARE_SIZE + SEGMENT_MARGIN,
-                    top: seg.y * SQUARE_SIZE + SEGMENT_MARGIN,
-                    width: SEGMENT_SIZE,
-                    height: SEGMENT_SIZE,
+                    left: food.x * SQUARE_SIZE + FOOD_MARGIN,
+                    top: food.y * SQUARE_SIZE + FOOD_MARGIN,
+                    width: FOOD_SIZE,
+                    height: FOOD_SIZE,
                   }}
                 />
-              ))}
-              {/* Food */}
-              <div
-                className="snake-food"
-                style={{
-                  left: food.x * SQUARE_SIZE + FOOD_MARGIN,
-                  top: food.y * SQUARE_SIZE + FOOD_MARGIN,
-                  width: FOOD_SIZE,
-                  height: FOOD_SIZE,
-                }}
-              />
-              {/* Grids */}
-              {[...Array(BOARD_COLS - 1)].map((_, i) => (
-                <div
-                  key={"vgrid" + i}
-                  className="snake-grid-line snake-grid-vert"
-                  style={{ left: (i + 1) * SQUARE_SIZE, height: SQUARE_SIZE * BOARD_ROWS }}
-                />
-              ))}
-              {[...Array(BOARD_ROWS - 1)].map((_, i) => (
-                <div
-                  key={"hgrid" + i}
-                  className="snake-grid-line snake-grid-horiz"
-                  style={{ top: (i + 1) * SQUARE_SIZE, width: SQUARE_SIZE * BOARD_COLS }}
-                />
-              ))}
+
+                {/* Grids */}
+                {[...Array(BOARD_COLS - 1)].map((_, i) => (
+                  <div
+                    key={"vgrid" + i}
+                    className="snake-grid-line snake-grid-vert"
+                    style={{ left: (i + 1) * SQUARE_SIZE, height: SQUARE_SIZE * BOARD_ROWS }}
+                  />
+                ))}
+                {[...Array(BOARD_ROWS - 1)].map((_, i) => (
+                  <div
+                    key={"hgrid" + i}
+                    className="snake-grid-line snake-grid-horiz"
+                    style={{ top: (i + 1) * SQUARE_SIZE, width: SQUARE_SIZE * BOARD_COLS }}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
-          <div className="snake-panel">
-            {!playing && !gameOver && !gamePaused && (
-              <button onClick={startGame} className="snake-btn">Start</button>
-            )}
-            {playing && (
-              <>
-                <button onClick={stopGame} className="snake-btn snake-btn-stop">Stop</button>
-                <button onClick={startGame} className="snake-btn">Restart</button>
-              </>
-            )}
-            {gamePaused && !gameOver && (
-              <>
-                <button onClick={resumeGame} className="snake-btn">Resume</button>
-                <button onClick={startGame} className="snake-btn">Restart</button>
-              </>
-            )}
-            {gameOver && (
-              <>
-                <div className="snake-over-message">Game Over</div>
-                <button onClick={startGame} className="snake-btn">Restart</button>
-              </>
-            )}
-            {(playing || gamePaused) && (
-              <>
-                <div className="snake-instructions">
-                  Use <kbd>↑</kbd> <kbd>←</kbd> <kbd>→</kbd> <kbd>↓</kbd> keys or tap the D-pad!
-                </div>
-                <div className="snake-controls-dpad">
-                  <button
-                    onClick={() => handleButtonDir("ArrowUp")}
-                    aria-label="Up"
-                    className="dir-btn up"
-                  >
-                    &#8593;
+
+            <div className="snake-panel">
+              {!playing && !gameOver && !gamePaused && (
+                <button onClick={startGame} className="snake-btn snake-btn-start">
+                  🎮 Start Game
+                </button>
+              )}
+
+              {playing && (
+                <div className="snake-controls-active">
+                  <button onClick={stopGame} className="snake-btn snake-btn-stop">
+                    ⏸️ Pause
                   </button>
-                  <div className="mid-row">
+                  <button onClick={startGame} className="snake-btn snake-btn-restart">
+                    🔄 Restart
+                  </button>
+                </div>
+              )}
+
+              {gamePaused && !gameOver && (
+                <div className="snake-controls-paused">
+                  <button onClick={resumeGame} className="snake-btn snake-btn-resume">
+                    ▶️ Resume
+                  </button>
+                  <button onClick={startGame} className="snake-btn snake-btn-restart">
+                    🔄 Restart
+                  </button>
+                </div>
+              )}
+
+              {gameOver && (
+                <div className="snake-game-over">
+                  <div className="snake-over-message">💀 Game Over!</div>
+                  <div className="snake-final-score">Final Score: {score}</div>
+                  <button onClick={startGame} className="snake-btn snake-btn-restart">
+                    🔄 Play Again
+                  </button>
+                </div>
+              )}
+
+              {(playing || gamePaused) && (
+                <div className="snake-controls-section">
+                  <div className="snake-instructions">
+                    Use <kbd>↑</kbd> <kbd>←</kbd> <kbd>→</kbd> <kbd>↓</kbd> or tap the D-pad!
+                  </div>
+
+                  <div className="snake-controls-dpad">
                     <button
-                      onClick={() => handleButtonDir("ArrowLeft")}
-                      aria-label="Left"
-                      className="dir-btn left"
+                      onClick={() => handleButtonDir("ArrowUp")}
+                      aria-label="Up"
+                      className="dir-btn dir-up"
                     >
-                      &#8592;
+                      ⬆️
                     </button>
-                    <span className="empty-dpad-cell"></span>
+                    <div className="mid-row">
+                      <button
+                        onClick={() => handleButtonDir("ArrowLeft")}
+                        aria-label="Left"
+                        className="dir-btn dir-left"
+                      >
+                        ⬅️
+                      </button>
+                      <div className="empty-dpad-cell"></div>
+                      <button
+                        onClick={() => handleButtonDir("ArrowRight")}
+                        aria-label="Right"
+                        className="dir-btn dir-right"
+                      >
+                        ➡️
+                      </button>
+                    </div>
                     <button
-                      onClick={() => handleButtonDir("ArrowRight")}
-                      aria-label="Right"
-                      className="dir-btn right"
+                      onClick={() => handleButtonDir("ArrowDown")}
+                      aria-label="Down"
+                      className="dir-btn dir-down"
                     >
-                      &#8594;
+                      ⬇️
                     </button>
                   </div>
-                  <button
-                    onClick={() => handleButtonDir("ArrowDown")}
-                    aria-label="Down"
-                    className="dir-btn down"
-                  >
-                    &#8595;
-                  </button>
                 </div>
-              </>
-            )}
+              )}
+            </div>
+          </div>
+
+          <div className="snake-footer">
+            <p>🎮 Classic Snake Game</p>
+            <p>Touch controls or use your keyboard!</p>
           </div>
         </div>
-        <div className="snake-footer">Classic Nokia Snake. Touch or keys!</div>
       </div>
     </div>
   );
 };
 
-export default Snake;
+export default SnakeGame;

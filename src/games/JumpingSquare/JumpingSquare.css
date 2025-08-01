@@ -1,123 +1,294 @@
 .jsq-container {
   max-width: 540px;
-  margin: 32px auto 30px auto;
-  padding: 22px 2vw 34px 2vw;
-  background: #141218;
-  border-radius: 19px;
-  box-shadow: 0 8px 44px #122466c0;
-  font-family: 'Share Tech Mono', 'Arial', monospace;
+  margin: 40px auto 50px auto;
+  padding: 30px 25px 40px 25px;
+  background: linear-gradient(180deg, #141218 0%, #2a2738 100%);
+  border-radius: 25px;
+  box-shadow: 0 15px 60px rgba(0, 0, 0, 0.5),
+              0 0 0 3px rgba(23, 255, 226, 0.2),
+              0 0 15px rgba(23, 255, 226, 0.4);
+  font-family: 'Press Start 2P', 'Share Tech Mono', 'Arial', monospace;
   color: #f5f5fa;
   text-align: center;
   user-select: none;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+}
+
+.jsq-container::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: 25px;
+  box-shadow: inset 0 0 30px rgba(23, 255, 226, 0.1);
+  z-index: 1;
 }
 
 .jsq-title {
-  font-size: 2.15rem;
+  font-size: 2.75rem;
   font-weight: bold;
   color: #17ffe2;
-  letter-spacing: 7px;
-  margin-bottom: 8px;
-  text-shadow: 0 2px 17px #49ffce80, 0 1.5px 1px #343b;
+  letter-spacing: 10px;
+  margin-bottom: 15px;
+  text-shadow: 0 5px 25px rgba(23, 255, 226, 0.5),
+               0 0 10px rgba(73, 255, 206, 0.8),
+               0 0 20px rgba(73, 255, 206, 0.6);
 }
 
-.jsq-bar {
+.jsq-score-bar {
   display: flex;
-  gap: 20px;
+  gap: 30px;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12px;
-  font-size: 1.13rem;
-  color: #28ffc1;
-}
-.jsq-btn {
-  background: linear-gradient(95deg,#17ffe2 10%,#ffd148 90%);
-  color: #183139;
+  margin-bottom: 25px;
+  padding: 10px 15px;
+  background: rgba(36, 38, 70, 0.6);
+  border-radius: 15px;
+  box-shadow: inset 0 0 10px rgba(23, 255, 226, 0.2);
+  font-size: 1.3rem;
+  color: #f5f5fa;
   font-weight: bold;
-  font-size: 1.07rem;
-  padding: 7px 22px;
-  border-radius: 13px;
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 2.5px 11px #1afcfc50;
-  margin-left: 6px;
-  transition: background 0.14s, color 0.16s;
-  outline: none;
-}
-.jsq-btn:hover,.jsq-btn:focus {
-  background: linear-gradient(90deg,#ffd148 8%,#17ffe2 100%);
-  color: #120a1c;
-  outline:2.8px solid #49ffce;
+  border: 1px solid rgba(23, 255, 226, 0.3);
 }
 
-/* SVG holds the actual game */
+.jsq-score-bar span {
+  color: #49ffce;
+  text-shadow: 0 0 5px #49ffce, 0 0 10px #49ffce;
+}
+
+.jsq-btn {
+  background: linear-gradient(95deg, #17ffe2 10%, #ffd148 90%);
+  color: #183139;
+  font-weight: bold;
+  font-size: 1.15rem;
+  padding: 10px 28px;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 5px 20px rgba(26, 252, 252, 0.4),
+              inset 0 0 10px rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.jsq-btn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+  transition: all 0.4s ease;
+}
+
+.jsq-btn:hover, .jsq-btn:focus {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(26, 252, 252, 0.6),
+              0 0 15px rgba(23, 255, 226, 0.7),
+              inset 0 0 15px rgba(255, 255, 255, 0.4);
+  color: #120a1c;
+}
+
+.jsq-btn:hover::before, .jsq-btn:focus::before {
+  left: 100%;
+}
+
+.jsq-restart-btn {
+  padding: 10px 28px;
+  border-radius: 15px;
+}
+
 .jsq-canvas-wrap {
-  margin: 0 auto 12px auto;
+  margin: 0 auto 20px auto;
   max-width: 99vw;
-  border-radius: 17px;
+  border-radius: 20px;
   background: #191828;
-  box-shadow: 0 4px 31px #49ffce14, 0 0 4px #2711ad1a;
+  box-shadow: inset 0 0 40px rgba(23, 255, 226, 0.15),
+              0 8px 40px rgba(0, 0, 0, 0.4);
   outline: none;
   position: relative;
   cursor: pointer;
-  transition: box-shadow 0.14s;
+  transition: all 0.3s ease;
   overflow: hidden;
 }
-.jsq-canvas-wrap:focus { box-shadow: 0 0 0 3px #49ffce,0 4px 24px #17ffe245; }
+.jsq-canvas-wrap:focus {
+  box-shadow: inset 0 0 40px rgba(23, 255, 226, 0.3),
+              0 0 0 4px #49ffce,
+              0 8px 50px rgba(23, 255, 226, 0.6);
+}
 
-/* Game Over overlay */
+.jsq-background { fill: #141218; }
+.jsq-ground { fill: #191920; }
+.jsq-ground-line { fill: #49ffce; }
+
+.jsq-obstacle {
+  fill: #ff476c;
+  stroke: #fff0;
+  stroke-width: 2.1;
+}
+
+.jsq-player {
+  fill: #17ffe2;
+  stroke: #1655b2;
+  stroke-width: 3.1;
+}
+
 .jsq-overlay {
   position: absolute;
   left: 0; top: 0; width: 100%; height: 100%;
-  background: rgba(21,22,34,0.81);
+  background: rgba(21, 22, 34, 0.9);
   z-index: 20;
   display: flex;
   align-items: center;
   justify-content: center;
   pointer-events: auto;
+  backdrop-filter: blur(5px);
 }
+
 .jsq-overbox {
-  background: #242646e9;
+  background: rgba(36, 38, 70, 0.9);
   color: #fd4059;
-  border-radius: 18px;
-  border: 2.3px solid #17ffe2;
-  padding: 23px 12px 17px 12px;
-  font-size: 1.24rem;
+  border-radius: 20px;
+  border: 3px solid #17ffe2;
+  padding: 30px 20px 25px 20px;
+  font-size: 1.4rem;
   font-weight: bold;
-  box-shadow: 0 0 28px #17ffe296, 0 0 11px #fd415399;
-  max-width: 243px;
-  margin: 0 auto;
-  animation: jsqfade .8s;
+  box-shadow: 0 0 40px rgba(23, 255, 226, 0.6),
+              0 0 20px rgba(253, 64, 89, 0.7),
+              inset 0 0 15px rgba(23, 255, 226, 0.3);
+  max-width: 280px;
+  text-align: center;
+  animation: jsqfade 0.6s ease-out;
 }
+
+.jsq-game-over-text {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  text-shadow: 0 0 15px #fd4059;
+}
+
+.jsq-final-score {
+  margin-bottom: 25px;
+  color: #f5f5fa;
+  font-size: 1.3rem;
+}
+
+.jsq-final-score b {
+  color: #49ffce;
+  text-shadow: 0 0 8px #49ffce;
+}
+
 @keyframes jsqfade {
-  0% { opacity: 0; transform: scale(.69);}
+  0% { opacity: 0; transform: scale(0.7);}
   100% {opacity:1; transform:scale(1);}
 }
 
 .jsq-instructions {
-  margin: 12px 0 4px 0;
+  margin: 15px 0 10px 0;
   color: #fffbda;
-  font-size: 1.09rem;
-  text-shadow: 0 1.5px 13px #361aff66;
+  font-size: 1.15rem;
+  text-shadow: 0 2px 15px rgba(54, 106, 255, 0.4);
   font-weight: 500;
-  letter-spacing: 1.1px;
-  line-height: 1.5;
-  opacity: .82;
+  line-height: 1.6;
+  opacity: 0.9;
 }
 
 .jsq-footer {
-  margin-top: 14px;
-  color: #49ffcebd;
-  font-size: 1.07rem;
-  opacity: .81;
-  letter-spacing: 1px;
+  margin-top: 20px;
+  color: #49ffce;
+  font-size: 1.08rem;
+  opacity: 0.85;
+  letter-spacing: 1.5px;
+  font-weight: bold;
 }
 
 /* Responsive */
-@media (max-width:620px) {
-  .jsq-container { padding: 7px 2vw 14vw 2vw;}
-  .jsq-title { font-size: 1.33rem;}
-  .jsq-bar { font-size:.99rem;}
-  .jsq-canvas-wrap { min-width: 99vw; }
-  .jsq-btn { font-size: .99rem;}
+@media (max-width: 768px) {
+  .jsq-container {
+    margin: 20px auto 30px auto;
+    padding: 20px 15px 30px 15px;
+  }
+  .jsq-title {
+    font-size: 2.2rem;
+    letter-spacing: 6px;
+  }
+  .jsq-score-bar {
+    font-size: 1.1rem;
+    padding: 8px 12px;
+    margin-bottom: 20px;
+  }
+  .jsq-btn {
+    font-size: 1.05rem;
+    padding: 8px 20px;
+  }
+  .jsq-canvas-wrap {
+    margin-bottom: 15px;
+  }
+  .jsq-instructions {
+    font-size: 1.05rem;
+  }
+  .jsq-footer {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .jsq-container {
+    width: 95%;
+    margin: 15px auto;
+    padding: 15px 10px 25px 10px;
+    border-radius: 18px;
+  }
+  .jsq-title {
+    font-size: 1.8rem;
+    letter-spacing: 4px;
+    margin-bottom: 10px;
+  }
+  .jsq-score-bar {
+    flex-direction: column;
+    gap: 10px;
+    font-size: 1rem;
+    margin-bottom: 15px;
+  }
+  .jsq-btn {
+    font-size: 1rem;
+    padding: 7px 18px;
+    margin-left: 0;
+  }
+  .jsq-canvas-wrap {
+    border-radius: 15px;
+    box-shadow: inset 0 0 30px rgba(23, 255, 226, 0.1),
+                0 5px 30px rgba(0, 0, 0, 0.4);
+  }
+  .jsq-canvas-wrap:focus {
+    box-shadow: inset 0 0 30px rgba(23, 255, 226, 0.2),
+                0 0 0 3px #49ffce,
+                0 5px 40px rgba(23, 255, 226, 0.5);
+  }
+  .jsq-overlay {
+    background: rgba(21, 22, 34, 0.95);
+    backdrop-filter: blur(3px);
+  }
+  .jsq-overbox {
+    border-radius: 15px;
+    padding: 20px 15px 18px 15px;
+    font-size: 1.2rem;
+  }
+  .jsq-game-over-text {
+    font-size: 1.5rem;
+  }
+  .jsq-final-score {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+  }
+  .jsq-instructions {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  .jsq-footer {
+    font-size: 0.95rem;
+  }
 }

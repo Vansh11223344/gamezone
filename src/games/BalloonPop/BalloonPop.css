@@ -482,9 +482,6 @@
   .bp-stats {
     gap: 15px;
   }
-  .bp-board {
-  margin: 0 auto 20px -6.5px;
-  }
 
   .bp-stat-value {
     font-size: 1.1rem;

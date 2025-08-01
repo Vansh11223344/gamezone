@@ -5,25 +5,26 @@ const GAME_W = 500, GAME_H = 220;
 const GROUND_Y = GAME_H - 44;
 const SQUARE_SIZE = 36;
 const OBSTACLE_W = 25, OBSTACLE_H = 44;
-const GRAVITY = 0.92;           // slower fall (was 1.08)
-const JUMP = -19.5;             // higher, more floaty (was -18)
-const SPEED = 4.2;              // same as before
+const GRAVITY = 0.92;
+const JUMP = -19.5;
+const SPEED = 4.2;
+const MIN_OBSTACLE_GAP = 300; // Minimum gap between obstacles
 
 function getRandomObstacle(x) {
+  const heightVariation = Math.random() * 50;
+  const obstacleHeight = OBSTACLE_H + heightVariation;
   return {
     x,
-    y: GROUND_Y - OBSTACLE_H + 4,
-    w: OBSTACLE_W,
-    h: OBSTACLE_H
+    y: GROUND_Y - obstacleHeight + 4,
+    w: OBSTACLE_W + Math.random() * 10,
+    h: obstacleHeight
   };
 }
 
 export default function JumpingSquare() {
   const [running, setRunning] = useState(true);
   const [player, setPlayer] = useState({ y: GROUND_Y - SQUARE_SIZE, vy: 0 });
-  const [obstacles, setObstacles] = useState([
-    getRandomObstacle(GAME_W + 70)
-  ]);
+  const [obstacles, setObstacles] = useState([getRandomObstacle(GAME_W + 70)]);
   const [score, setScore] = useState(0);
   const [lost, setLost] = useState(false);
 
@@ -40,17 +41,24 @@ export default function JumpingSquare() {
     });
   }
 
+  function restart() {
+    if (raf.current) cancelAnimationFrame(raf.current);
+    setPlayer({ y: GROUND_Y - SQUARE_SIZE, vy: 0 });
+    setObstacles([getRandomObstacle(GAME_W + 70)]);
+    setScore(0);
+    setRunning(true);
+    setLost(false);
+  }
+
   useEffect(() => {
     function handle(e) {
       if ([" ", "Spacebar", "ArrowUp", "w", "W"].includes(e.key)) {
         jump();
         e.preventDefault();
       }
-      if (
-        !running &&
-        (e.key === " " || e.key === "Enter" || e.key === "r" || e.key === "R")
-      )
+      if (!running && [" ", "Enter", "r", "R"].includes(e.key)) {
         restart();
+      }
     }
     window.addEventListener("keydown", handle);
     return () => window.removeEventListener("keydown", handle);
@@ -61,15 +69,6 @@ export default function JumpingSquare() {
     else jump();
   }
 
-  function restart() {
-    setPlayer({ y: GROUND_Y - SQUARE_SIZE, vy: 0 });
-    setObstacles([getRandomObstacle(GAME_W + 90)]);
-    setScore(0);
-    setRunning(true);
-    setLost(false);
-  }
-
-  // Main game loop
   useEffect(() => {
     if (!running) return;
     function loop() {
@@ -87,9 +86,11 @@ export default function JumpingSquare() {
         let next = obs
           .map(o => ({ ...o, x: o.x - SPEED }))
           .filter(o => o.x + o.w > -10);
+        const lastObstacle = next[next.length - 1];
         if (
-          next.length < 2 ||
-          next[next.length - 1].x < GAME_W - 230 - Math.random() * 120
+          next.length < 2 &&
+          lastObstacle &&
+          lastObstacle.x < GAME_W - MIN_OBSTACLE_GAP
         ) {
           next.push(getRandomObstacle(GAME_W + 140 + Math.random() * 240));
         }
@@ -114,6 +115,7 @@ export default function JumpingSquare() {
       ) {
         setRunning(false);
         setLost(true);
+        if (raf.current) cancelAnimationFrame(raf.current);
         break;
       }
     }
@@ -127,10 +129,10 @@ export default function JumpingSquare() {
 
   return (
     <div className="jsq-container">
-      <h2 className="jsq-title">Jumping Square</h2>
-      <div className="jsq-bar">
+      <h1 className="jsq-title">Jumping Square</h1>
+      <div className="jsq-score-bar">
         <span>Score: <b>{Math.floor(score / 3)}</b></span>
-        <button className="jsq-btn" onClick={restart}>Restart</button>
+        <button className="jsq-btn jsq-restart-btn" onClick={restart}>Restart</button>
       </div>
       <div
         className="jsq-canvas-wrap"
@@ -148,11 +150,22 @@ export default function JumpingSquare() {
         <svg
           width={GAME_W}
           height={GAME_H}
+          viewBox={`0 0 ${GAME_W} ${GAME_H}`}
           style={{ width: "100%", height: "100%" }}
         >
-          <rect x="0" y="0" width={GAME_W} height={GAME_H} fill="#141218" />
-          <rect x="0" y={GROUND_Y + 2} width={GAME_W} height={16} fill="#191920" />
-          <rect x="0" y={GROUND_Y} width={GAME_W} height={4} fill="#49ffce" rx={3} />
+          <defs>
+            <filter id="obshad">
+              <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor="#f6c" />
+              <feDropShadow dx="0" dy="6" stdDeviation="5" floodColor="#ff476c" />
+            </filter>
+            <filter id="playershad">
+              <feDropShadow dx="0" dy="0" stdDeviation="6" floodColor="#38fa" />
+              <feDropShadow dx="0" dy="4" stdDeviation="12" floodColor="#17ffe2" />
+            </filter>
+          </defs>
+          <rect className="jsq-background" width={GAME_W} height={GAME_H} />
+          <rect className="jsq-ground" y={GROUND_Y + 2} width={GAME_W} height={16} />
+          <rect className="jsq-ground-line" y={GROUND_Y} width={GAME_W} height={4} rx={3} />
           {obstacles.map((o, i) => (
             <rect
               key={i}
@@ -161,10 +174,8 @@ export default function JumpingSquare() {
               width={o.w}
               height={o.h}
               rx={7}
-              fill="#ff476c"
-              stroke="#fff0"
-              strokeWidth="2.1"
-              filter="url(#obshad)"
+              className="jsq-obstacle"
+              style={{ filter: "url(#obshad)" }}
             />
           ))}
           <rect
@@ -173,27 +184,15 @@ export default function JumpingSquare() {
             width={SQUARE_SIZE}
             height={SQUARE_SIZE}
             rx={8}
-            fill="#17ffe2"
-            stroke="#1655b2"
-            strokeWidth="3.1"
-            style={{
-              filter: lost
-                ? "drop-shadow(0 0 18px #f03)"
-                : "drop-shadow(0 0 11px #38fa)"
-            }}
+            className="jsq-player"
+            style={{ filter: "url(#playershad)" }}
           />
-          <defs>
-            <filter id="obshad">
-              <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor="#f6c" />
-              <feDropShadow dx="0" dy="6" stdDeviation="5" floodColor="#ff476c" />
-            </filter>
-          </defs>
         </svg>
         {lost && (
-          <div className="jsq-overlay" tabIndex={0}>
+          <div className="jsq-overlay">
             <div className="jsq-overbox">
-              <div>💀 Game Over!</div>
-              <div>Score: <b>{Math.floor(score / 3)}</b></div>
+              <div className="jsq-game-over-text">💀 Game Over!</div>
+              <div className="jsq-final-score">Score: <b>{Math.floor(score / 3)}</b></div>
               <button className="jsq-btn" onClick={restart}>
                 Play Again
               </button>
@@ -207,7 +206,7 @@ export default function JumpingSquare() {
         Try for a high score!
       </div>
       <div className="jsq-footer">
-        Classic Jump Game | Neon Arcade Theme
+        Classic Jump Game 
       </div>
     </div>
   );

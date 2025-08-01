@@ -142,7 +142,7 @@
   border: 1px solid #eadfbe;
   background: #fcf7eb;
   position: relative;
-  font-size: clamp(0.8rem, 2vw, 0.9rem);
+  font-size: clamp(0.9rem, 2vw, 1rem);
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;

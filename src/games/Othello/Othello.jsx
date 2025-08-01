@@ -174,7 +174,7 @@ export default function Othello() {
         )}
       </div>
       <div className="othello-footer">
-        Classic Othello &mdash; Green felt style
+        Flip your opponent's discs by surrounding them.
       </div>
     </div>
   );

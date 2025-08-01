@@ -368,14 +368,12 @@ export default function MemoryMatch() {
                 <span className="win-stat-label">Max Streak</span>
               </div>
             </div>
-            {bestScore && bestScore.moves === moves && bestScore.time === timeElapsed && (
-              <div className="new-record">🏆 New Personal Best!</div>
-            )}
+            
             <div className="win-actions">
               <button className="btn-play-again" onClick={restart}>
                 🔄 Play Again
               </button>
-              <button className="btn-new-challenge" onClick={() => setShowSettings(true)}>
+              <button className="btn-new-challenge" onClick={restart}>
                 🎯 New Challenge
               </button>
             </div>
